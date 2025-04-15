@@ -1,0 +1,13 @@
+{
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        // Run whenever html, css, or js files are saved
+        "match": "*.dart",
+        "cmd": "dart format '${file}'",
+        "autoShowOutputPanel": "never",
+        "messageAfter": "Ran Dart format on ${fileBasename}",
+      }
+    ]
+  }
+}
