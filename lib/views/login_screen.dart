@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../api/pocketbase.dart';
 import '../components/administration_login_modal.dart';
@@ -46,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 showLoadingDialog(context);
                 try {
                   final loginAuthRecord = StudentQrModel.fromLoginToken(token);
-                  final record = await pb
+                  await pb
                       .collection('students')
                       .authWithPassword(
                         loginAuthRecord.email,
@@ -106,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (formKey.currentState!.validate()) {
                         showLoadingDialog(context, message: 'Bitte warten...');
                         try {
-                          final result = await pb
+                          await pb
                               .collection('teachers')
                               .authWithPassword(
                                 usernameController.text,

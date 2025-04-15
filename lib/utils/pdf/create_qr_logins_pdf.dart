@@ -7,7 +7,11 @@ import '../../api/pocketbase.dart';
 import '../../components/student_qr_login_screen.dart';
 import '../logger.dart';
 
-Future<Uint8List> createPDF(List<StudentQrModel> accounts, String title, String courseID) async {
+Future<Uint8List> createPDF(
+  List<StudentQrModel> accounts,
+  String title,
+  String courseID,
+) async {
   final pdf = pw.Document(
     pageMode: PdfPageMode.fullscreen,
     author: 'Sportslogger',
@@ -24,22 +28,35 @@ Future<Uint8List> createPDF(List<StudentQrModel> accounts, String title, String 
             title,
             style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
           ),
-      footer: (context) => pw.SizedBox(
-        width: 600,
-        child: pw.Row(
-            children: [
-              pw.Column(
+      footer:
+          (context) => pw.SizedBox(
+            width: 600,
+            child: pw.Row(
+              children: [
+                pw.Column(
                   children: [
-                    pw.Text('Nur für den internen gebrauch'.toUpperCase(), style: pw.TextStyle(fontSize: 8.0, fontWeight: pw.FontWeight.bold)),
+                    pw.Text(
+                      'Nur für den internen gebrauch'.toUpperCase(),
+                      style: pw.TextStyle(
+                        fontSize: 8.0,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
+                    ),
                     pw.Text(
                       'Generiert von ${pb.authStore.record?.data['krz']} ${pb.authStore.record?.data['email']}',
                       style: pw.TextStyle(fontSize: 8),
                     ),
-                    pw.Text('${pb.authStore.record?.data['school']}:${pb.authStore.record?.id}:$courseID', style: pw.TextStyle(fontSize: 6.0, font: pw.Font.courier())),
-                  ]
-              ),
-              pw.Spacer(),
-              pw.Column(
+                    pw.Text(
+                      '${pb.authStore.record?.data['school']}:${pb.authStore.record?.id}:$courseID',
+                      style: pw.TextStyle(
+                        fontSize: 6.0,
+                        font: pw.Font.courier(),
+                      ),
+                    ),
+                  ],
+                ),
+                pw.Spacer(),
+                pw.Column(
                   children: [
                     pw.Text(
                       'Seite ${context.pageNumber} von ${context.pagesCount}',
@@ -49,11 +66,11 @@ Future<Uint8List> createPDF(List<StudentQrModel> accounts, String title, String 
                       DateTime.now().toLocal().toString(),
                       style: pw.TextStyle(fontSize: 8),
                     ),
-                  ]
-              )
-            ]
-        )
-      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
       build: (context) {
         final chunks = splitIntoChunks(accounts, 3);
         return chunks
@@ -93,7 +110,7 @@ Future<Uint8List> createPDF(List<StudentQrModel> accounts, String title, String 
                                           '${e.firstName} ${e.secondName}',
                                           softWrap: true,
                                           style: pw.TextStyle(fontSize: 12),
-                                        )
+                                        ),
                                       ),
                                       pw.Text(
                                         e.id,

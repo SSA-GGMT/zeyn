@@ -18,9 +18,8 @@ class _StudentHomeViewState extends State<StudentHomeView> {
   Future<void> getCourse() async {
     logger.d(pb.authStore.record!.data['course']);
     final course = await pb
-      .collection('courses').getOne(pb.authStore.record!.data['course'],
-      expand: 'school,sport',
-    );
+        .collection('courses')
+        .getOne(pb.authStore.record!.data['course'], expand: 'school,sport');
 
     logger.d('Course: ${course.toJson()['expand']}');
     setState(() {
@@ -38,7 +37,9 @@ class _StudentHomeViewState extends State<StudentHomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${pb.authStore.record!.data['secondName']}, ${pb.authStore.record!.data['firstName']}'),
+        title: Text(
+          '${pb.authStore.record!.data['secondName']}, ${pb.authStore.record!.data['firstName']}',
+        ),
         actions: [LogoutIconButton()],
         backgroundColor: Theme.of(context).colorScheme.tertiary,
       ),
@@ -55,20 +56,29 @@ class _StudentHomeViewState extends State<StudentHomeView> {
                 ),
                 borderRadius: BorderRadiusDirectional.vertical(
                   bottom: Radius.circular(16.0),
-                )
+                ),
               ),
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Row(
                   spacing: 8.0,
                   children: [
-                    Icon(Icons.school, size: 40,),
+                    Icon(Icons.school, size: 40),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text("${courseModel?.data['courseTitle']} (${courseModel?.data['expand']['sport']['name']})" ?? '', style: Theme.of(context).textTheme.titleMedium,),
-                        Text(courseModel?.data['expand']['school']['name'] ?? '', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15),),
+                        Text(
+                          "${courseModel?.data['courseTitle']} (${courseModel?.data['expand']['sport']['name']})",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          courseModel?.data['expand']['school']['name'] ?? '',
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 15,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -77,14 +87,12 @@ class _StudentHomeViewState extends State<StudentHomeView> {
             ),
           ),
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return ListTile(
-                  title: Text("${courseModel?.toJson()}"),
-                );
-              },
-              childCount: 1,
-            ),
+            delegate: SliverChildBuilderDelegate((
+              BuildContext context,
+              int index,
+            ) {
+              return ListTile(title: Text("${courseModel?.toJson()}"));
+            }, childCount: 1),
           ),
         ],
       ),

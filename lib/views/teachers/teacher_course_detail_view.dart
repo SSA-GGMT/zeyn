@@ -116,7 +116,10 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
 
   Future<Uint8List> getPdfData() async {
     showLoadingDialog(context);
-    final pdfData = await createPDF(students!.map((student) => StudentQrModel.fromRecordModel(student)).toList(),
+    final pdfData = await createPDF(
+      students!
+          .map((student) => StudentQrModel.fromRecordModel(student))
+          .toList(),
       'Logins für >${courseData.data['courseTitle']}<',
       courseData.id,
     );
@@ -132,39 +135,36 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
         backgroundColor: Theme.of(context).primaryColorLight,
         actions: [
           PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                onTap: () async {
-                  final data = await getPdfData();
-                  Printing.layoutPdf(
-                    onLayout: (format) => data,
-                  );
-                },
-                child: Row(
-                  spacing: 4.0,
-                  children: [
-                    Icon(Icons.print),
-                    Text('Logins Drucken'),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                onTap: () async {
-                  final data = await getPdfData();
-                  await Printing.sharePdf(
-                    bytes: data,
-                    filename: 'Logins_${courseData.data['courseTitle']}.pdf',
-                  );
-                },
-                child: Row(
-                  spacing: 4.0,
-                  children: [
-                    Icon(Icons.picture_as_pdf),
-                    Text('Logins Druck teilen'),
-                  ],
-                ),
-              ),
-            ],
+            itemBuilder:
+                (context) => [
+                  PopupMenuItem(
+                    onTap: () async {
+                      final data = await getPdfData();
+                      Printing.layoutPdf(onLayout: (format) => data);
+                    },
+                    child: Row(
+                      spacing: 4.0,
+                      children: [Icon(Icons.print), Text('Logins Drucken')],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    onTap: () async {
+                      final data = await getPdfData();
+                      await Printing.sharePdf(
+                        bytes: data,
+                        filename:
+                            'Logins_${courseData.data['courseTitle']}.pdf',
+                      );
+                    },
+                    child: Row(
+                      spacing: 4.0,
+                      children: [
+                        Icon(Icons.picture_as_pdf),
+                        Text('Logins Druck teilen'),
+                      ],
+                    ),
+                  ),
+                ],
           ),
         ],
       ),
@@ -202,7 +202,10 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                         child: Icon(Icons.group, size: 40),
                       ),
                       SizedBox(width: 8.0),
-                      Text(courseData.data['courseTitle'], style: Theme.of(context).textTheme.titleMedium,),
+                      Text(
+                        courseData.data['courseTitle'],
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
                       Spacer(),
                       Wrap(
                         spacing: 4.0,
