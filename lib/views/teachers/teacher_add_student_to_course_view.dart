@@ -1,0 +1,126 @@
+import 'package:flutter/material.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:sportslogger/components/teacher/sports_selector.dart';
+import 'package:sportslogger/utils/dialogs/show_error_dialog.dart';
+import 'package:sportslogger/utils/password_generator.dart';
+
+import '../../api/pocketbase.dart';
+import '../../utils/dialogs/show_loading_dialog.dart';
+import '../../utils/logger.dart';
+
+class TeacherAddStudentToCourseView extends StatefulWidget {
+  const TeacherAddStudentToCourseView({super.key, required this.courseData});
+  final RecordModel courseData;
+
+  @override
+  State<TeacherAddStudentToCourseView> createState() =>
+      _TeacherAddStudentToCourseViewState();
+}
+
+class _TeacherAddStudentToCourseViewState
+    extends State<TeacherAddStudentToCourseView> {
+  static const padding = 8.0;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _secondNameController = TextEditingController();
+
+  void addStudent() async {
+    showLoadingDialog(context, message: 'Schüler wird hinzugefügt...');
+    final password = passwordGenerator(length: 70);
+    final int unixTime = DateTime.now().millisecondsSinceEpoch;
+    final fictionalMail =
+        '${pb.authStore.record?.data['school']}.${widget.courseData.id}.$unixTime@schule.null';
+    final body = <String, dynamic>{
+      "courseTitle": _firstNameController.text,
+      "school": pb.authStore.record?.data['school'],
+      "createdByTeacher": pb.authStore.record?.id,
+      "course": widget.courseData.id,
+      "firstName": _firstNameController.text,
+      "secondName": _secondNameController.text,
+      "password": password,
+      "passwordConfirm": password,
+      "clearTextPassword": password,
+      "emailVisibility": true,
+      "verified": true,
+      "email": fictionalMail,
+    };
+
+    try {
+      final recordModel = await pb.collection('students').create(body: body);
+      if (mounted) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop(recordModel);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Schüler erfolgreich hinzugefügt!')),
+        );
+      }
+    } catch (e, s) {
+      logger.e(e, stackTrace: s);
+      if (mounted) {
+        Navigator.of(context).pop();
+        showErrorDialog(context);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Schüler erstellen')),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(padding),
+              child: TextFormField(
+                controller: _firstNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Vorname',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Bitte geben Sie den Vornamen ein.';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(padding),
+              child: TextFormField(
+                controller: _secondNameController,
+                decoration: const InputDecoration(
+                  labelText: 'Nachname',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Bitte geben Sie den Nachname ein.';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(padding),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    addStudent();
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 8.0,
+                  children: const [Icon(Icons.add), Text('Kurs hinzufügen')],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
