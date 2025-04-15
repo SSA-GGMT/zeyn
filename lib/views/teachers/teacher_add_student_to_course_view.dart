@@ -23,6 +23,7 @@ class _TeacherAddStudentToCourseViewState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _secondNameController = TextEditingController();
+  String kaderStatus = 'TSP';
 
   void addStudent() async {
     showLoadingDialog(context, message: 'Schüler wird hinzugefügt...');
@@ -43,6 +44,7 @@ class _TeacherAddStudentToCourseViewState
       "emailVisibility": true,
       "verified": true,
       "email": fictionalMail,
+      "kaderStatus": kaderStatus,
     };
 
     try {
@@ -102,6 +104,26 @@ class _TeacherAddStudentToCourseViewState
                   return null;
                 },
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownMenu<String>(
+                label: Text('Kaderstatus'),
+                width: double.infinity,
+                initialSelection: 'TSP',
+                onSelected: (String? value) {
+                  setState(() {
+                    kaderStatus = value!;
+                  });
+                },
+                dropdownMenuEntries: ['TSP', 'NK', 'LK']
+                    .map(
+                      (String value) => DropdownMenuEntry<String>(
+                        value: value,
+                        label: value,
+                      ),
+                    ).toList(),
+              )
             ),
             Padding(
               padding: const EdgeInsets.all(padding),

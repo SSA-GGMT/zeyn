@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:sportslogger/components/student_qr_login_screen.dart';
 import 'package:sportslogger/components/teacher/student_list_tile.dart';
+import 'package:sportslogger/utils/dialogs/show_info_dialog.dart';
 import 'package:sportslogger/utils/dialogs/show_loading_dialog.dart';
 import 'package:sportslogger/views/teachers/teacher_add_student_to_course_view.dart';
 import 'package:printing/printing.dart';
@@ -42,7 +43,9 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
       final updatedCourseData = await pb
           .collection('courses')
           .getOne(courseData.id);
-      final studentsData = await pb.collection('students').getList();
+      final studentsData = await pb.collection('students').getList(
+        filter: 'course="${updatedCourseData.id}"',
+      );
       students = studentsData.items;
       setState(() {
         courseData = updatedCourseData;
@@ -134,6 +137,12 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
         title: Text('Kursdetails'),
         backgroundColor: Theme.of(context).primaryColorLight,
         actions: [
+          if (isOwnCourse) IconButton(
+            onPressed: () {
+              showInfoDialog(context, "Sie haben Administrationsrechte für diesen Kurs.");
+            },
+            icon: Icon(Icons.admin_panel_settings,),
+          ),
           PopupMenuButton(
             itemBuilder:
                 (context) => [
@@ -212,6 +221,17 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                         children: [
                           AsyncTeacherChip(
                             teacherId: courseData.data['manager'],
+                            actions: [
+                              Row(
+                                spacing: 8.0,
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.admin_panel_settings),
+                                  Text('Kursadmin'),
+                                ],
+                              ),
+                            ],
                           ),
                           ...courseData.data['guestManagers'].map(
                             (teacherId) => AsyncTeacherChip(
