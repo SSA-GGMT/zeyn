@@ -1,7 +1,5 @@
-import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -9,7 +7,7 @@ import '../../api/pocketbase.dart';
 import '../../components/student_qr_login_screen.dart';
 import '../logger.dart';
 
-Future<String> createPDF(List<StudentQrModel> accounts, String title, String courseID) async {
+Future<Uint8List> createPDF(List<StudentQrModel> accounts, String title, String courseID) async {
   final pdf = pw.Document(
     pageMode: PdfPageMode.fullscreen,
     author: 'Sportslogger',
@@ -115,11 +113,8 @@ Future<String> createPDF(List<StudentQrModel> accounts, String title, String cou
       },
     ),
   );
-  final pdfSave = await pdf.save();
-  final tempDocumentsDirectory = await getTemporaryDirectory();
-  final String path = '${tempDocumentsDirectory.path}/sl_qr_logins.pdf';
-  await File(path).writeAsBytes(pdfSave);
-  return path;
+
+  return await pdf.save();
 }
 
 List<List<T>> splitIntoChunks<T>(List<T> list, int chunkSize) {

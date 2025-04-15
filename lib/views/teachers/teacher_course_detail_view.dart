@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:sportslogger/components/student_qr_login_screen.dart';
 import 'package:sportslogger/components/teacher/student_list_tile.dart';
 import 'package:sportslogger/utils/dialogs/show_loading_dialog.dart';
 import 'package:sportslogger/views/teachers/teacher_add_student_to_course_view.dart';
+import 'package:printing/printing.dart';
 
 import '../../api/pocketbase.dart';
 import '../../components/teacher/async_teacher_chip.dart';
@@ -111,24 +114,31 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
     }
   }
 
+  Future<Uint8List> getPdfData() async {
+    showLoadingDialog(context);
+    final pdfData = await createPDF(students!.map((student) => StudentQrModel.fromRecordModel(student)).toList(),
+      'Logins für >${courseData.data['courseTitle']}<',
+      courseData.id,
+    );
+    if (mounted) Navigator.of(context).pop();
+    return pdfData;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(courseData.data['courseTitle'] ?? 'Kursdetails'),
+        title: Text('Kursdetails'),
         backgroundColor: Theme.of(context).primaryColorLight,
         actions: [
           PopupMenuButton(
             itemBuilder: (context) => [
               PopupMenuItem(
                 onTap: () async {
-                  showLoadingDialog(context);
-                  final pdfPath = await createPDF(students!.map((student) => StudentQrModel.fromRecordModel(student)).toList(),
-                    'Logins für >${courseData.data['courseTitle']}<',
-                    courseData.id,
+                  final data = await getPdfData();
+                  Printing.layoutPdf(
+                    onLayout: (format) => data,
                   );
-                  if (context.mounted) Navigator.of(context).pop();
-
                 },
                 child: Row(
                   spacing: 4.0,
@@ -138,8 +148,24 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                   ],
                 ),
               ),
+              PopupMenuItem(
+                onTap: () async {
+                  final data = await getPdfData();
+                  await Printing.sharePdf(
+                    bytes: data,
+                    filename: 'Logins_${courseData.data['courseTitle']}.pdf',
+                  );
+                },
+                child: Row(
+                  spacing: 4.0,
+                  children: [
+                    Icon(Icons.picture_as_pdf),
+                    Text('Logins Druck teilen'),
+                  ],
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
       body: RefreshIndicator(
@@ -175,6 +201,8 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                         ),
                         child: Icon(Icons.group, size: 40),
                       ),
+                      SizedBox(width: 8.0),
+                      Text(courseData.data['courseTitle'], style: Theme.of(context).textTheme.titleMedium,),
                       Spacer(),
                       Wrap(
                         spacing: 4.0,
