@@ -9,11 +9,11 @@ import 'package:sportslogger/views/teachers/teacher_home_view.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initPocketbase();
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {

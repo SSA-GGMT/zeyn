@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:sportslogger/api/pocketbase.dart';
 
 class LogoutIconButton extends StatelessWidget {
@@ -33,6 +34,7 @@ class LogoutIconButton extends StatelessWidget {
 
         if (shouldLogout == true) {
           pb.authStore.clear();
+          Phoenix.rebirth(context);
         }
       },
     );
