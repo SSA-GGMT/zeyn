@@ -34,7 +34,7 @@ class LogoutIconButton extends StatelessWidget {
 
         if (shouldLogout == true) {
           pb.authStore.clear();
-          Phoenix.rebirth(context);
+          if (context.mounted) Phoenix.rebirth(context);
         }
       },
     );

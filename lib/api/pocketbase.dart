@@ -11,5 +11,5 @@ Future<void> initPocketbase() async {
     save: (String data) async => prefs.setString('pb_auth', data),
     initial: prefs.getString('pb_auth'),
   );
-  pb = PocketBase('http://192.168.179.3:8900/', authStore: store);
+  pb = PocketBase('http://10.109.126.50:8900/', authStore: store);
 }

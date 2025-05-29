@@ -22,6 +22,9 @@ class App extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue[900]!),
         useMaterial3: true,
+        sliderTheme: const SliderThemeData(
+          year2023: false,
+        )
       ),
       home: Scaffold(
         body: StreamBuilder(

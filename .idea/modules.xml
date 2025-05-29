@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/sportslogger.iml" filepath="$PROJECT_DIR$/.idea/sportslogger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/sportslogger_android.iml" filepath="$PROJECT_DIR$/android/sportslogger_android.iml" />
     </modules>
   </component>
 </project>
