@@ -22,7 +22,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
   Widget _buildBarcode(Barcode? value) {
     if (value == null) {
       return const Text(
-        'Scan something!',
+        'Scanne den Schüler-QR code!',
         overflow: TextOverflow.fade,
         style: TextStyle(color: Colors.white),
       );

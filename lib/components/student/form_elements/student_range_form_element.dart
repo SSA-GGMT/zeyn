@@ -55,10 +55,10 @@ class _StudentRangeFormElementState extends State<StudentRangeFormElement> {
     t = t.clamp(0.0, 1.0);
 
     // Calculate interpolated RGBA components
-    int r = (A.red + (B.red - A.red) * t).round();
-    int g = (A.green + (B.green - A.green) * t).round();
-    int b = (A.blue + (B.blue - A.blue) * t).round();
-    int a = (A.alpha + (B.alpha - A.alpha) * t).round();
+    int r = (A.r + (B.r - A.r) * t).round();
+    int g = (A.g + (B.g - A.g) * t).round();
+    int b = (A.b + (B.b - A.b) * t).round();
+    int a = (A.a + (B.a - A.a) * t).round();
 
     // Return new color with interpolated values
     return Color.fromARGB(a, r, g, b);

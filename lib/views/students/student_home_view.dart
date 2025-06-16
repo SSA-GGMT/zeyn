@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:sportslogger/components/logout_icon_button.dart';
 import 'package:sportslogger/components/student/student_history_list_tile.dart';
+import 'package:sportslogger/utils/dialogs/show_confirm_dialog.dart';
 import 'package:sportslogger/views/students/student_create_new_entry_view.dart';
 
 import '../../api/pocketbase.dart';
@@ -137,6 +138,21 @@ class _StudentHomeViewState extends State<StudentHomeView> {
               itemBuilder: (context, index) => StudentHistoryListTile(
                 historyEntry: historyEntries![historyEntries!.length - index - 1],
                 questionsDefinition: courseModel?.data['questions'],
+                onDelete: () async {
+                  final delete = await showConfirmDialog(context);
+                  if (delete == false) return;
+                  showLoadingDialog(context);
+                  pb.collection('studentRecords').delete(historyEntries![historyEntries!.length - index - 1].id).then((_) {
+                    if (context.mounted) Navigator.of(context).pop();
+                    getHistoryEntries();
+                  }).catchError((e, s) {
+                    logger.e(e, stackTrace: s);
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                      showErrorDialog(context);
+                    }
+                  });
+                },
               ),
             ),
           ],

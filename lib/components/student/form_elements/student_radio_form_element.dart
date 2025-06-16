@@ -12,41 +12,6 @@ class StudentRadioFormElement extends StatelessWidget {
 
   final int questionIndex;
   final dynamic definition;
-  /*
-    definition:
-     {
-        "type": "radio",
-        "label": "Anwesenheit",
-        "id": "attendance",
-        "options": [
-            {
-                "label": "Anwesend",
-                "hideFields": [],
-                "hint": null
-            },
-            {
-                "label": "Verletzung/Krankheit",
-                "hideFields": ["games_count", "tactics_eval", "technique_eval", "fitness_condition_eval"],
-                "hint": null
-            },
-            {
-                "label": "Entfallen",
-                "hideFields": ["games_count", "tactics_eval", "technique_eval", "fitness_condition_eval"],
-                "hint": null
-            },
-            {
-                "label": "Beurlaubt",
-                "hideFields": ["games_count", "tactics_eval", "technique_eval", "fitness_condition_eval"],
-                "hint": null
-            },
-            {
-                "label": "Sonstiges",
-                "hideFields": ["games_count", "tactics_eval", "technique_eval", "fitness_condition_eval"],
-                "hint": "Arztbesuch, Schulveranstaltung, Freistellung, Ferien, etc."
-            }
-        ]
-    },
-     */
   final FormResultCallback onResult;
   final String? value;
 

@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../../utils/logger.dart';
-
 class StudentHistoryListTile extends StatelessWidget {
-  const StudentHistoryListTile({super.key, required this.historyEntry, required this.questionsDefinition});
+  const StudentHistoryListTile({super.key, required this.historyEntry, required this.questionsDefinition, required this.onDelete});
   final RecordModel historyEntry;
   final List<dynamic> questionsDefinition;
+  final VoidCallback onDelete;
 
   String agoString(DateTime dateTime) {
     final now = DateTime.now();
@@ -32,9 +29,8 @@ class StudentHistoryListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.d(historyEntry.data["created"]);
-
     final entryJson = historyEntry.data['questionAnswer'];
+    final DateTime? createdDate = DateTime.tryParse(historyEntry.data["created"]);
     return Column(
       children: [
         ListTile(
@@ -42,7 +38,7 @@ class StudentHistoryListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("${entryJson[questionsDefinition[0]['id']]}"),
-              Text(agoString(DateTime.tryParse(historyEntry.data["created"])!),
+              Text(agoString(createdDate!),
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ],
@@ -57,6 +53,7 @@ class StudentHistoryListTile extends StatelessWidget {
                 ),
             ],
           ),
+          trailing: createdDate.isAfter(DateTime.now().subtract(Duration(days: 2))) ? IconButton(onPressed: onDelete, icon: Icon(Icons.delete)): null,
         ),
         const Divider(
           height: 1,
