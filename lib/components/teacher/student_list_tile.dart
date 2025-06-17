@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../../utils/logger.dart';
+import '../../api/pocketbase.dart';
+import '../../utils/condition_generator.dart';
 import '../student_qr_login_screen.dart';
 
 class StudentListTile extends StatefulWidget {
-  const StudentListTile({super.key, required this.initStudentData});
+  const StudentListTile({super.key, required this.initStudentData, required this.form, required this.evalFields});
   final RecordModel initStudentData;
+  final List<dynamic> form;
+  final List<String> evalFields;
 
   @override
   State<StudentListTile> createState() => _StudentListTileState();
@@ -14,6 +17,10 @@ class StudentListTile extends StatefulWidget {
 
 class _StudentListTileState extends State<StudentListTile> {
   late final List<StudentListTileAction> _actions;
+  late List<RecordModel> studentRecords;
+  late List<ConditionColor> conditionColors;
+  bool loadingRecords = true;
+
   @override
   void initState() {
     _actions = [
@@ -28,44 +35,74 @@ class _StudentListTileState extends State<StudentListTile> {
         },
       ),
       StudentListTileAction(
-        icon: Icon(Icons.edit),
-        label: 'Bearbeiten',
-        onTap: () {},
-      ),
-      StudentListTileAction(
         icon: Icon(Icons.delete),
         label: 'Löschen',
-        onTap: () {},
+        onTap: () {
+          // TODO: Implement delete functionality also deleting all related data
+        },
       ),
     ];
     super.initState();
+    _loadStudentRecords();
   }
 
+  Future<void> _loadStudentRecords() async {
+    // you can also fetch all records at once via getFullList
+      final records = await pb.collection('studentRecords').getFullList(
+        // not older than 7 days
+        filter: 'student = "${widget.initStudentData.id}" && created > "${DateTime.now().subtract(const Duration(days: 7)).toIso8601String()}"',
+      );
+
+      studentRecords = records;
+      List<Map> studentRecordsMap = studentRecords.map((e) =>
+      {
+        ...e.data['questionAnswer'],
+        'created': e.data['created'],
+      }).toList(growable: false);
+      //TODO: add evalFields dynamically
+      conditionColors = ConditionGenerator.generateConditionColors(studentRecords: studentRecordsMap, evalFields: widget.evalFields);
+
+      setState(() {
+      loadingRecords = false;
+    });
+  }
+  
+  String getConditionLabel(String id) {
+    final condition = widget.form.firstWhere(
+      (element) => element['id'] == id,
+      orElse: () => {'label': 'Unbekannt'},
+    );
+    return condition['label'] ?? 'Unbekannt';
+  }
+  
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']}",
+        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${widget.initStudentData.data['kaderStatus']})",
       ),
-      subtitle: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.0),
-            decoration: BoxDecoration(
-              color: {
-                'TSP': Colors.green,
-                'LK': Colors.yellow,
-                'NK': Colors.red,
-              }[widget.initStudentData.data['kaderStatus']] ?? Colors.grey,
-              borderRadius: BorderRadius.circular(4.0),
-              border: Border.all(
-                color: Colors.black,
-                width: 1.0,
-              ),
-            ),
-            child: Text(widget.initStudentData.data['kaderStatus'],),
-          )
-        ],
+      subtitle: loadingRecords ? LinearProgressIndicator() : Wrap(
+        spacing: 2,
+        children: conditionColors.map(
+              (conditionColor) => Container(
+                padding: EdgeInsets.symmetric(horizontal: 2.0),
+                margin: EdgeInsets.symmetric(vertical: 1.0),
+                decoration: BoxDecoration(
+                  color: conditionColor.color,
+                  borderRadius: BorderRadius.circular(4.0),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                ),
+                child: Text(getConditionLabel(conditionColor.id),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12.0,
+                  ),
+                ),
+              )
+          ).toList(),
       ),
       leading: const Icon(Icons.school),
       onTap: () {},

@@ -311,7 +311,7 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                 child: Column(
                   children:
                       students!
-                          .map((e) => StudentListTile(initStudentData: e))
+                          .map((e) => StudentListTile(initStudentData: e, form: courseData.data['questions'] as List<dynamic>, evalFields: List<String>.from(courseData.data['evalFunction'] as List)))
                           .toList(),
                 ),
               ),

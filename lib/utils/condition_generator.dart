@@ -3,23 +3,23 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+/// Takes two colors and a value between 0 and 1, and returns a color that is
+/// a gradient between the two colors at the given position
+Color gradientColorAt(Color A, Color B, double t) {
+  // Ensure t is between 0 and 1
+  t = t.clamp(0.0, 1.0);
+
+  // Calculate interpolated RGBA components
+  int r = (A.red + (B.red - A.red) * t).round();
+  int g = (A.green + (B.green - A.green) * t).round();
+  int b = (A.blue + (B.blue - A.blue) * t).round();
+  int a = (A.alpha + (B.alpha - A.alpha) * t).round();
+
+  // Return new color with interpolated values
+  return Color.fromARGB(a, r, g, b);
+}
+
 class ConditionGenerator {
-  /// Takes two colors and a value between 0 and 1, and returns a color that is
-  /// a gradient between the two colors at the given position
-  Color gradientColorAt(Color A, Color B, double t) {
-    // Ensure t is between 0 and 1
-    t = t.clamp(0.0, 1.0);
-
-    // Calculate interpolated RGBA components
-    int r = (A.r + (B.r - A.r) * t).round();
-    int g = (A.g + (B.g - A.g) * t).round();
-    int b = (A.b + (B.b - A.b) * t).round();
-    int a = (A.a + (B.a - A.a) * t).round();
-
-    // Return new color with interpolated values
-    return Color.fromARGB(a, r, g, b);
-  }
-
   bool containsAny(Iterable keys, Iterable values) {
     for (var value in values) {
       if (keys.contains(value)) return true;
@@ -27,7 +27,7 @@ class ConditionGenerator {
     return false;
   }
 
-  List<ConditionColor> generateConditionColors({
+  static List<ConditionColor> generateConditionColors({
     List<Map> studentRecords = const [],
     List<String> evalFields = const [],
   }) {
@@ -62,7 +62,7 @@ class ConditionGenerator {
       );
     }
 
-    return [];
+    return result;
   }
 }
 
@@ -79,21 +79,6 @@ class DayCollection {
   final int weight;
   List<dynamic> studentRecords;
   int get count => studentRecords.length;
-
-  Color gradientColorAt(Color A, Color B, double t) {
-    // Ensure t is between 0 and 1
-    t = t.clamp(0.0, 1.0);
-
-    // Calculate interpolated RGBA components
-    int r = (A.r + (B.r - A.r) * t).round();
-    int g = (A.g + (B.g - A.g) * t).round();
-    int b = (A.b + (B.b - A.b) * t).round();
-    int a = (A.a + (B.a - A.a) * t).round();
-
-    // Return new color with interpolated values
-    return Color.fromARGB(a, r, g, b);
-  }
-
   Color getAvgColor(String evalField) {
     List<Color> colors = [];
     for (var record in studentRecords) {
@@ -109,7 +94,7 @@ class DayCollection {
         );
       }
     }
-    if (colors.isEmpty) return Colors.transparent;
+    if (colors.isEmpty) return Colors.grey.shade500;
     return _mixColor(colors.map((color) => ColorPart(color, 1)).toList());
   }
 
@@ -119,13 +104,13 @@ class DayCollection {
 
 class ConditionColor {
   final Color color;
-  final String label;
+  final String id;
 
-  ConditionColor(this.color, this.label);
+  ConditionColor(this.color, this.id);
 
   @override
   String toString() {
-    return 'ConditionColor(color: $color, label: $label)';
+    return 'ConditionColor(color: $color, label: $id)';
   }
 }
 
