@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:sportslogger/components/logout_icon_button.dart';
-import 'package:sportslogger/views/teachers/teacher_add_course_view.dart';
+import 'package:zeyn/components/logout_icon_button.dart';
+import 'package:zeyn/views/teachers/teacher_add_course_view.dart';
 
 import '../../api/pocketbase.dart';
 import '../../components/teacher/course_list_tile.dart';
@@ -72,7 +72,7 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SportsLogger'),
+        title: Text('zeyn'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         actions: [LogoutIconButton()],
@@ -121,14 +121,6 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
               ],
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.person_search),
-            trailing: Icon(Icons.arrow_forward),
-            title: Text('Schüler suchen'),
-            subtitle: Text('Schüler suchen und analysieren'),
-            onTap: () {},
-          ),
-          Divider(height: 4, thickness: 2),
           Expanded(
             child: RefreshIndicator(
               key: _refreshKey,

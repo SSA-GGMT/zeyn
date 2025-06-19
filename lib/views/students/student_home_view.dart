@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:sportslogger/components/logout_icon_button.dart';
-import 'package:sportslogger/components/student/student_history_list_tile.dart';
-import 'package:sportslogger/utils/dialogs/show_confirm_dialog.dart';
-import 'package:sportslogger/views/students/student_create_new_entry_view.dart';
+import 'package:zeyn/components/logout_icon_button.dart';
+import 'package:zeyn/components/student/student_history_list_tile.dart';
+import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
+import 'package:zeyn/views/students/student_create_new_entry_view.dart';
 
 import '../../api/pocketbase.dart';
 import '../../utils/dialogs/show_error_dialog.dart';

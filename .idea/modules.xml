@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sportslogger.iml" filepath="$PROJECT_DIR$/.idea/sportslogger.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/sportslogger_android.iml" filepath="$PROJECT_DIR$/android/sportslogger_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/zeyn.iml" filepath="$PROJECT_DIR$/.idea/zeyn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/zeyn_android.iml" filepath="$PROJECT_DIR$/android/zeyn_android.iml" />
     </modules>
   </component>
 </project>

@@ -2,11 +2,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:sportslogger/components/student_qr_login_screen.dart';
-import 'package:sportslogger/components/teacher/student_list_tile.dart';
-import 'package:sportslogger/utils/dialogs/show_info_dialog.dart';
-import 'package:sportslogger/utils/dialogs/show_loading_dialog.dart';
-import 'package:sportslogger/views/teachers/teacher_add_student_to_course_view.dart';
+import 'package:zeyn/components/student_qr_login_screen.dart';
+import 'package:zeyn/components/teacher/student_list_tile.dart';
+import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
+import 'package:zeyn/utils/dialogs/show_info_dialog.dart';
+import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';
+import 'package:zeyn/views/teachers/teacher_add_student_to_course_view.dart';
 import 'package:printing/printing.dart';
 
 import '../../api/pocketbase.dart';
@@ -173,6 +174,17 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                       ],
                     ),
                   ),
+                  if (isOwnCourse)
+                    PopupMenuItem(
+                      onTap: () async {
+                        final shouldDelete = await showConfirmDialog(context, message: "Sind Sie sicher, dass Sie diesen Kurs löschen möchten? Alle Schüler und deren Einträge werden gelöscht.");
+                        if (!shouldDelete) return;
+                      },
+                      child: Row(
+                        spacing: 4.0,
+                        children: [Icon(Icons.delete), Text('Kurs löschen')],
+                      ),
+                    ),
                 ],
           ),
         ],
@@ -311,7 +323,12 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                 child: Column(
                   children:
                       students!
-                          .map((e) => StudentListTile(initStudentData: e, form: courseData.data['questions'] as List<dynamic>, evalFields: List<String>.from(courseData.data['evalFunction'] as List)))
+                          .map((e) => StudentListTile(
+                          initStudentData: e, form: courseData.data['questions'] as List<dynamic>,
+                          evalFields: List<String>.from(courseData.data['evalFunction'] as List),
+                        refreshCallback: () => refreshCourseData(showLoading: true),
+                      )
+                        ,)
                           .toList(),
                 ),
               ),

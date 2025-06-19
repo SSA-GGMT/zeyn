@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sportslogger/components/student/form_elements/form_result.dart';
+import 'package:zeyn/components/student/form_elements/form_result.dart';
 
 
 class StudentSelectFormElement extends StatelessWidget {

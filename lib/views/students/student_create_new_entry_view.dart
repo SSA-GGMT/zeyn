@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:sportslogger/components/student/form_elements/student_range_form_element.dart';
-import 'package:sportslogger/components/student/form_elements/student_select_form_element.dart';
+import 'package:zeyn/components/student/form_elements/student_range_form_element.dart';
+import 'package:zeyn/components/student/form_elements/student_select_form_element.dart';
 
 import '../../api/pocketbase.dart';
 import '../../components/student/form_elements/form_result.dart';

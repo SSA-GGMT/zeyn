@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:sportslogger/api/pocketbase.dart';
+import 'package:zeyn/api/pocketbase.dart';
 
 class LogoutIconButton extends StatelessWidget {
   const LogoutIconButton({super.key});

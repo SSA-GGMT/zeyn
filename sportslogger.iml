@@ -2,9 +2,9 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$USER_HOME$/Documents/pocketbase_test_db/sportslogger">
-      <excludeFolder url="file://$USER_HOME$/Documents/pocketbase_test_db/sportslogger/.dart_tool" />
-      <excludeFolder url="file://$USER_HOME$/Documents/pocketbase_test_db/sportslogger/.pub" />
+    <content url="file://$USER_HOME$/Documents/pocketbase_test_db/zeyn">
+      <excludeFolder url="file://$USER_HOME$/Documents/pocketbase_test_db/zeyn/.dart_tool" />
+      <excludeFolder url="file://$USER_HOME$/Documents/pocketbase_test_db/zeyn/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

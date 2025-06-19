@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
+import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
+import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';
 
 import '../../api/pocketbase.dart';
 import '../../utils/condition_generator.dart';
+import '../../utils/logger.dart';
 import '../student_qr_login_screen.dart';
 
 class StudentListTile extends StatefulWidget {
-  const StudentListTile({super.key, required this.initStudentData, required this.form, required this.evalFields});
+  const StudentListTile({super.key, required this.initStudentData, required this.form, required this.evalFields, required this.refreshCallback});
   final RecordModel initStudentData;
   final List<dynamic> form;
   final List<String> evalFields;
+  final Function refreshCallback;
 
   @override
   State<StudentListTile> createState() => _StudentListTileState();
@@ -37,8 +42,31 @@ class _StudentListTileState extends State<StudentListTile> {
       StudentListTileAction(
         icon: Icon(Icons.delete),
         label: 'Löschen',
-        onTap: () {
-          // TODO: Implement delete functionality also deleting all related data
+        onTap: () async {
+          final shouldDelete = await showConfirmDialog(context);
+          if (!shouldDelete) return;
+          if (mounted) showLoadingDialog(context);
+          try {
+            final records = await pb.collection('studentRecords').getFullList(
+              filter: 'student = "${widget.initStudentData.id}"',
+              fields: 'id',
+            );
+            final batch = pb.createBatch();
+            for (final record in records) {
+              batch.collection('studentRecords').delete(record.id);
+            }
+            batch.collection('students').delete(widget.initStudentData.id);
+            await batch.send();
+            widget.refreshCallback();
+            if (mounted) Navigator.of(context).pop();
+          } catch (e, s) {
+            logger.e(e, stackTrace: s);
+            if (mounted) {
+              Navigator.of(context).pop();
+              showErrorDialog(context);
+            }
+            return;
+          }
         },
       ),
     ];
@@ -59,7 +87,6 @@ class _StudentListTileState extends State<StudentListTile> {
         ...e.data['questionAnswer'],
         'created': e.data['created'],
       }).toList(growable: false);
-      //TODO: add evalFields dynamically
       conditionColors = ConditionGenerator.generateConditionColors(studentRecords: studentRecordsMap, evalFields: widget.evalFields);
 
       setState(() {
@@ -105,7 +132,6 @@ class _StudentListTileState extends State<StudentListTile> {
           ).toList(),
       ),
       leading: const Icon(Icons.school),
-      onTap: () {},
       trailing: PopupMenuButton<StudentListTileAction>(
         onSelected: (StudentListTileAction choice) {
           choice.onTap();

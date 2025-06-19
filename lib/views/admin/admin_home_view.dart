@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:sportslogger/components/admin/teacher_list_tile.dart';
-import 'package:sportslogger/components/logout_icon_button.dart';
+import 'package:zeyn/components/admin/teacher_list_tile.dart';
+import 'package:zeyn/components/logout_icon_button.dart';
 
 import '../../api/pocketbase.dart';
 import '../../utils/logger.dart';

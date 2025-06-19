@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:sportslogger/utils/dialogs/show_confirm_dialog.dart';
-import 'package:sportslogger/utils/dialogs/show_error_dialog.dart';
+import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
+import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
 import '../../utils/dialogs/show_loading_dialog.dart';
 import '../../utils/logger.dart';
 

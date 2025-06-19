@@ -14,7 +14,7 @@ Future<Uint8List> createPDF(
 ) async {
   final pdf = pw.Document(
     pageMode: PdfPageMode.fullscreen,
-    author: 'Sportslogger',
+    author: 'zeyn',
     creator: pb.authStore.record?.data['email'],
   );
 

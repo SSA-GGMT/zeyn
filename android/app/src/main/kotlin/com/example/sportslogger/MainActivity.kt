@@ -1,4 +1,4 @@
-package com.example.sportslogger
+package com.example.zeyn
 
 import io.flutter.embedding.android.FlutterActivity
 

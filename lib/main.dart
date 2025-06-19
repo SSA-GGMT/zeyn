@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:sportslogger/api/pocketbase.dart';
-import 'package:sportslogger/views/admin/admin_home_view.dart';
-import 'package:sportslogger/views/login_screen.dart';
-import 'package:sportslogger/views/students/student_home_view.dart';
-import 'package:sportslogger/views/teachers/teacher_home_view.dart';
+import 'package:zeyn/api/pocketbase.dart';
+import 'package:zeyn/views/admin/admin_home_view.dart';
+import 'package:zeyn/views/login_screen.dart';
+import 'package:zeyn/views/students/student_home_view.dart';
+import 'package:zeyn/views/teachers/teacher_home_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SportsLogger',
+      title: 'zeyn',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue[900]!),
         useMaterial3: true,
