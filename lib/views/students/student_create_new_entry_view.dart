@@ -107,6 +107,7 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
     final body = <String, dynamic>{
       "student": pb.authStore.record?.id,
       "course": pb.authStore.record?.data['course'],
+      "school": pb.authStore.record?.data['school'],
       "questionAnswer": jsonEncode(formData)
     };
 
