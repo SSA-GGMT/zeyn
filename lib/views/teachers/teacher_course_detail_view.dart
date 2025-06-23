@@ -5,6 +5,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:zeyn/components/student_qr_login_screen.dart';
 import 'package:zeyn/components/teacher/student_list_tile.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
+import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_info_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';
 import 'package:zeyn/views/teachers/teacher_add_student_to_course_view.dart';
@@ -17,8 +18,9 @@ import '../../utils/logger.dart';
 import '../../utils/pdf/create_qr_logins_pdf.dart';
 
 class TeacherCourseDetailView extends StatefulWidget {
-  const TeacherCourseDetailView({super.key, required this.initCourseData});
+  const TeacherCourseDetailView({super.key, required this.initCourseData, required this.popAndRefresh});
   final RecordModel initCourseData;
+  final Function popAndRefresh;
 
   @override
   State<TeacherCourseDetailView> createState() =>
@@ -178,7 +180,22 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                     PopupMenuItem(
                       onTap: () async {
                         final shouldDelete = await showConfirmDialog(context, message: "Sind Sie sicher, dass Sie diesen Kurs löschen möchten? Alle Schüler und deren Einträge werden gelöscht.");
-                        if (!shouldDelete) return;
+                        if (!shouldDelete && !context.mounted) return;
+                        showLoadingDialog(context);
+                        try {
+                          await pb.collection('courses').delete(courseData.id);
+                          if (context.mounted) {
+                            Navigator.of(context).pop(); // loading modal
+                            widget.popAndRefresh?.call();
+                          }
+                        } catch (e, s) {
+                          logger.e(e, stackTrace: s);
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                            showErrorDialog(context);
+                          }
+                          return;
+                        }
                       },
                       child: Row(
                         spacing: 4.0,

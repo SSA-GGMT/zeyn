@@ -11,5 +11,5 @@ Future<void> initPocketbase() async {
     save: (String data) async => prefs.setString('pb_auth', data),
     initial: prefs.getString('pb_auth'),
   );
-  pb = PocketBase('http://10.0.2.2:8900/', authStore: store);
+  pb = PocketBase('https://zeyn.meinschulamt-ruesselsheim.de/', authStore: store);
 }

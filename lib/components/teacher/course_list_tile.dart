@@ -9,11 +9,13 @@ class CourseListTile extends StatelessWidget {
   const CourseListTile({
     super.key,
     required this.courseData,
-    List<RecordModel>? this.sportsList,
+    required this.popAndRefresh,
+    this.sportsList,
   });
 
   final RecordModel courseData;
   final List<RecordModel>? sportsList;
+  final Function popAndRefresh;
 
   bool get _isOwnCourse {
     return courseData.data['manager'] == pb.authStore.record?.id;
@@ -59,7 +61,7 @@ class CourseListTile extends StatelessWidget {
           MaterialPageRoute(
             builder:
                 (context) =>
-                    TeacherCourseDetailView(initCourseData: courseData),
+                    TeacherCourseDetailView(initCourseData: courseData, popAndRefresh: popAndRefresh,),
           ),
         );
       },

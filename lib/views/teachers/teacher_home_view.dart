@@ -134,6 +134,10 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
                           return CourseListTile(
                             courseData: course,
                             sportsList: sports,
+                            popAndRefresh: () async {
+                              Navigator.of(context).pop();
+                              _refreshKey.currentState?.show();
+                            },
                           );
                         },
                       )

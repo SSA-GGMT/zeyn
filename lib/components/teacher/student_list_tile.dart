@@ -47,16 +47,7 @@ class _StudentListTileState extends State<StudentListTile> {
           if (!shouldDelete) return;
           if (mounted) showLoadingDialog(context);
           try {
-            final records = await pb.collection('studentRecords').getFullList(
-              filter: 'student = "${widget.initStudentData.id}"',
-              fields: 'id',
-            );
-            final batch = pb.createBatch();
-            for (final record in records) {
-              batch.collection('studentRecords').delete(record.id);
-            }
-            batch.collection('students').delete(widget.initStudentData.id);
-            await batch.send();
+            await pb.collection('students').delete(widget.initStudentData.id);
             widget.refreshCallback();
             if (mounted) Navigator.of(context).pop();
           } catch (e, s) {
