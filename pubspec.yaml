@@ -1,5 +1,8 @@
 name: zeyn
-description: "A new Flutter project."
+description: "Zeyn allows you to track the activity of your students."
+
+# authors:
+#   - contact@alessioc42.dev
 
 publish_to: 'none'
 

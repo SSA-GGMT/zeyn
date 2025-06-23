@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/pocketbase.dart';
 import '../components/administration_login_modal.dart';
@@ -24,7 +25,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('zeyn')),
+      appBar: AppBar(
+        title: Text('Z. E. Y. N.'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.code),
+            onPressed: () {
+              launchUrl(
+                Uri.parse('https://github.com/SSA-GGMT/zeyn')
+              );
+            },
+          )
+        ]
+        ),
       body: Padding(
         padding: EdgeInsets.all(12.0),
         child: Column(
