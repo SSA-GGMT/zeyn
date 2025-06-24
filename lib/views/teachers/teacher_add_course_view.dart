@@ -27,6 +27,8 @@ class _TeacherAddCourseViewState extends State<TeacherAddCourseView> {
       "manager": pb.authStore.record?.id,
       "guestManagers": [],
       "sport": selectedSport!.id,
+      'questions': selectedSport!.data['defaultQuestions']!,
+      'evalFunction': selectedSport!.data['defaultEval']!,
     };
 
     try {

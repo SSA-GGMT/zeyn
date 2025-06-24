@@ -135,7 +135,7 @@ class _TeacherAddStudentToCourseViewState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 8.0,
-                  children: const [Icon(Icons.add), Text('Kurs hinzufügen')],
+                  children: const [Icon(Icons.add), Text('Schüler erstellen')],
                 ),
               ),
             ),
