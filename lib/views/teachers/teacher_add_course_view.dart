@@ -38,7 +38,7 @@ class _TeacherAddCourseViewState extends State<TeacherAddCourseView> {
           SnackBar(content: Text('Kurs erfolgreich hinzugefügt!')),
         );
       }
-    } catch (e, s) {
+    } catch (e) {
       if (mounted) {
         Navigator.of(context).pop();
         showErrorDialog(context);

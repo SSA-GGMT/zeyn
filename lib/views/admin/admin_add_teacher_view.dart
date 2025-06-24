@@ -39,13 +39,14 @@ class _AdminAddTeacherViewState extends State<AdminAddTeacherView> {
     };
 
     try {
-      final record = await pb.collection('teachers').create(body: body);
+      await pb.collection('teachers').create(body: body);
+      if (!mounted) return;
       Navigator.of(context).pop();
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Lehrer erfolgreich hinzugefügt!')),
       );
-    } catch (e, s) {
+    } catch (e) {
       showErrorDialog(context);
     }
   }

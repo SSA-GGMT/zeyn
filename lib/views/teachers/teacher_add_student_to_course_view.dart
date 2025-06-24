@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:zeyn/components/teacher/sports_selector.dart';
 import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
 import 'package:zeyn/utils/password_generator.dart';
 

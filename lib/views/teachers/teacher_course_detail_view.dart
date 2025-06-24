@@ -186,7 +186,7 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                           await pb.collection('courses').delete(courseData.id);
                           if (context.mounted) {
                             Navigator.of(context).pop(); // loading modal
-                            widget.popAndRefresh?.call();
+                            widget.popAndRefresh();
                           }
                         } catch (e, s) {
                           logger.e(e, stackTrace: s);
