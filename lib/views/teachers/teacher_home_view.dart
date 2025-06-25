@@ -72,7 +72,7 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('zeyn'),
+        title: Text('Zeyn'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         actions: [LogoutIconButton()],
