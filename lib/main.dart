@@ -27,17 +27,18 @@ class App extends StatelessWidget {
           year2023: false,
         ),
       ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue[900]!,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-        sliderTheme: const SliderThemeData(
-          year2023: false,
-        ),
-      ),
-      themeMode: ThemeMode.system,
+      // commented out, due to currently hard coded text colors in some widgets
+      // darkTheme: ThemeData(
+      //         colorScheme: ColorScheme.fromSeed(
+      //           seedColor: Colors.blue[900]!,
+      //           brightness: Brightness.dark,
+      //         ),
+      //         useMaterial3: true,
+      //         sliderTheme: const SliderThemeData(
+      //           year2023: false,
+      //         ),
+      //       ),
+      //       themeMode: ThemeMode.system,
       home: Scaffold(
         body: StreamBuilder(
           stream: pb.authStore.onChange,
