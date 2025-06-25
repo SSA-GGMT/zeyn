@@ -26,7 +26,7 @@ Die Anwendung speichert die folgenden Nutzerbezogenen Daten
  - Kader Status (gesetzt durch Schule)
  - Datum der Erstellung
 
-Durch die Umfragefunktion werden zudem Antworten zu den durch den Lehrer des Kurses definierten Fragen für 4 Jahre gespeichert. Die Löschung der Daten erfolgt Automatisch.
+Durch die Umfragefunktion werden zudem Antworten zu den durch den Lehrer des Kurses definierten Fragen für 1 Jahre gespeichert. Die Löschung der Daten erfolgt Automatisch.
 
 #### Lehrer
  - E-Mail adresse
@@ -44,7 +44,7 @@ Durch den Logout wird diese Session-ID wieder gelöscht. Das Session-ID wird in 
 Die Speicherung der Daten erfolgt in einem iso 27001 zertifizierten Rechenzentrum. Die Accounts und die Daten, die damit verbunden sind werden im Nutzungszeitraum gespeichert. Eine Löschung dieser muss manuell erfolgen. Schüler- und Lehreraccounts werden automatisch mit dem Verlassen der Schule durch die Schule gelöscht.
 
 ### Löschung der Daten
-Eine Löschung der Daten kann ausschließlich von der betreibenden Schule bzw. dem vorgesetztem Lehrer erfolgen. Bei der Löschung werden keine Logs mit referenz auf den Nutzer gelöscht. Die Löschung dieser erfolgt spätestens 5 Tage danach.
+Eine Löschung der Daten kann ausschließlich von der betreibenden Schule bzw. dem vorgesetztem Lehrer erfolgen. Bei der Löschung werden keine Logs mit Referenz auf den Nutzer gelöscht. Die Löschung dieser erfolgt spätestens 5 Tage danach.
 
 ## Berechtigungen
 
