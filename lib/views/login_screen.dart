@@ -93,11 +93,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   TextFormField(
                     controller: usernameController,
-                    decoration: InputDecoration(labelText: 'Nutzername'),
+                    decoration: InputDecoration(labelText: 'E-Mail'),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Bitte Nutzernamen eingeben';
+                        return 'Bitte E-Mail eingeben';
                       }
                       return null;
                     },

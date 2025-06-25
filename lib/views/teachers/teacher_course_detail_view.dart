@@ -49,8 +49,8 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
       final studentsData = await pb.collection('students').getList(
         filter: 'course="${updatedCourseData.id}"',
       );
-      students = studentsData.items;
       setState(() {
+        students = studentsData.items;
         courseData = updatedCourseData;
       });
     } catch (e, s) {
@@ -341,6 +341,7 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                   children:
                       students!
                           .map((e) => StudentListTile(
+                          key: Key(e.id),
                           initStudentData: e, form: courseData.data['questions'] as List<dynamic>,
                           evalFields: List<String>.from(courseData.data['evalFunction'] as List),
                         refreshCallback: () => refreshCourseData(showLoading: true),
