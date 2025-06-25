@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../utils/logger.dart';
-
 Future<void> showStudentLoginQrCode(
   BuildContext context,
   StudentQrModel student,
@@ -147,11 +145,22 @@ class StudentQrModel {
 
     final encrypted = encrypt.encrypt(jsonString, iv: iv);
     final e = '${iv.base64}:${encrypted.base64}';
-    logger.d(e);
-    return e;
+    return Uri(
+      scheme: 'https',
+      host: 'zeyn.meinschulamt-ruesselsheim.de',
+      path: 'login',
+      queryParameters: {'token': e},
+    ).toString();
   }
 
   factory StudentQrModel.fromLoginToken(String token) {
+    if (token.startsWith('https://')) {
+      final uri = Uri.parse(token);
+      if (uri.queryParameters['token'] == null) {
+        throw Exception('Invalid token format');
+      }
+      token = uri.queryParameters['token']!;
+    }
     final split = token.split(':');
     final iv = en.IV.fromBase64(split[0]);
     final encrypted = en.Encrypted.fromBase64(split[1]);
