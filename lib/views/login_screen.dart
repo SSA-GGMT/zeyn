@@ -39,134 +39,149 @@ class _LoginScreenState extends State<LoginScreen> {
           )
         ]
         ),
-      body: Padding(
-        padding: EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(height: 30),
-            Icon(Icons.login, size: 60),
-            SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              spacing: 8,
-              children: [Icon(Icons.school), Text('Schüler Login')],
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final token = await scanBarcode(context);
-                if (token == null || !context.mounted) return;
-                showLoadingDialog(context);
-                try {
-                  final loginAuthRecord = StudentQrModel.fromLoginToken(token);
-                  await pb
-                      .collection('students')
-                      .authWithPassword(
-                        loginAuthRecord.email,
-                        loginAuthRecord.password,
-                      );
-                } catch (e, s) {
-                  logger.e(e, stackTrace: s);
-                }
-                if (context.mounted) Navigator.of(context).pop();
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 30),
+              Icon(Icons.login, size: 60),
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                spacing: 8,
+                children: [Icon(Icons.school), Text('Schüler Login')],
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final token = await scanBarcode(context);
+                  if (token == null || !context.mounted) return;
+                  showLoadingDialog(context);
+                  try {
+                    final loginAuthRecord = StudentQrModel.fromLoginToken(token);
+                    await pb
+                        .collection('students')
+                        .authWithPassword(
+                      loginAuthRecord.email,
+                      loginAuthRecord.password,
+                    );
+                  } catch (e, s) {
+                    logger.e(e, stackTrace: s);
+                  }
+                  if (context.mounted) Navigator.of(context).pop();
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.qr_code),
+                    Text('QR Code Scannen'),
+                    Container(),
+                  ],
+                ),
+              ),
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                spacing: 8,
+                children: [Icon(Icons.person), Text('Lehrer Login')],
+              ),
+              Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      controller: usernameController,
+                      decoration: InputDecoration(labelText: 'E-Mail'),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Bitte E-Mail eingeben';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(labelText: 'Passwort'),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Bitte Passwort eingeben';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          showLoadingDialog(context, message: 'Bitte warten...');
+                          try {
+                            await pb
+                                .collection('teachers')
+                                .authWithPassword(
+                              usernameController.text,
+                              passwordController.text,
+                            );
+                            if (!pb.authStore.isValid) {
+                              if (context.mounted) Navigator.of(context).pop();
+                              showErrorDialog(
+                                context,
+                                message: 'Login fehlgeschlagen',
+                              );
+                              return;
+                            }
+                            if (context.mounted) Navigator.of(context).pop();
+                          } catch (e, stackTrace) {
+                            if (context.mounted) Navigator.of(context).pop();
+                            logger.e(e, stackTrace: stackTrace);
+                            showErrorDialog(context);
+                          }
+                        }
+                      },
+                      child: Text('Login'),
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.qr_code),
-                  Text('QR Code Scannen'),
-                  Container(),
-                ],
-              ),
-            ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              spacing: 8,
-              children: [Icon(Icons.person), Text('Lehrer Login')],
-            ),
-            Form(
-              key: formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    controller: usernameController,
-                    decoration: InputDecoration(labelText: 'E-Mail'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Bitte E-Mail eingeben';
-                      }
-                      return null;
+                  TextButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      spacing: 8,
+                      children: [
+                        Icon(Icons.privacy_tip),
+                        Text('Datenschutz'),
+                      ],
+                    ),
+                    onPressed: () {
+                      launchUrl(Uri.parse('https://ssa-ggmt.github.io/zeyn/'));
                     },
                   ),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(labelText: 'Passwort'),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Bitte Passwort eingeben';
-                      }
-                      return null;
+                  TextButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      spacing: 8,
+                      children: [
+                        Icon(Icons.account_balance),
+                        Text('Administration'),
+                      ],
+                    ),
+                    onPressed: () {
+                      showAdministrationLoginModal(context);
                     },
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        showLoadingDialog(context, message: 'Bitte warten...');
-                        try {
-                          await pb
-                              .collection('teachers')
-                              .authWithPassword(
-                                usernameController.text,
-                                passwordController.text,
-                              );
-                          if (!pb.authStore.isValid) {
-                            if (context.mounted) Navigator.of(context).pop();
-                            showErrorDialog(
-                              context,
-                              message: 'Login fehlgeschlagen',
-                            );
-                            return;
-                          }
-                          if (context.mounted) Navigator.of(context).pop();
-                        } catch (e, stackTrace) {
-                          if (context.mounted) Navigator.of(context).pop();
-                          logger.e(e, stackTrace: stackTrace);
-                          showErrorDialog(context);
-                        }
-                      }
-                    },
-                    child: Text('Login'),
                   ),
                 ],
               ),
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    spacing: 8,
-                    children: [
-                      Icon(Icons.account_balance),
-                      Text('Administration'),
-                    ],
-                  ),
-                  onPressed: () {
-                    showAdministrationLoginModal(context);
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-          ],
+              SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
