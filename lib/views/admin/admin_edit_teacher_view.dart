@@ -77,8 +77,9 @@ class _AdminEditTeacherViewState extends State<AdminEditTeacherView> {
     if (!(await showConfirmDialog(
       context,
       message: 'Willst du diesen Lehrer wirklich löschen?',
-    )))
+    ))) {
       return;
+    }
     showLoadingDialog(context, message: 'Lehrer wird gelöscht...');
     try {
       await pb.collection('teachers').delete(widget.initialData.id);
