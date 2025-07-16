@@ -1,6 +1,6 @@
 # zeyn
 
-A new Flutter project.
+Schülerförderung im regionalen Talent und Förderzentrum - 
 
 ## Getting Started
 
