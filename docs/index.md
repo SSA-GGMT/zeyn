@@ -31,7 +31,7 @@ Die Verarbeitung erfolgt auf Grundlage von:
 - Hessische Schul-Datenschutzverordnung (SchDSV)
 - Landesprogramm „Talentsuche – Talentförderung"
 
-**Rechtliche Grundlage: Datenerhebung zur Sportförderung an hessischen Schulen (z. B. RTZ Rüsselsheim und Hofheim)**
+**Rechtliche Grundlage: Datenerhebung zur Sportförderung an hessischen Schulen**
 
 **Überblick & Begründung**  
 Die Dokumentation und Auswertung der sportlichen Entwicklung von Schülerinnen und Schülern im Rahmen von Talentfördermaßnahmen (wie RTZ) ist gemäß Hessischem Schulgesetz und der Schul-Datenschutzverordnung zulässig und notwendig. Sie dient der gezielten Förderung sportlicher Talente und der Durchführung von Landesprogrammen zur Talentsichtung und -förderung.
@@ -147,7 +147,6 @@ Die Verarbeitung Ihrer Daten findet ausschließlich in einem Mitgliedstaat der E
 ### 7.3 Weitere Empfänger
 Darüber hinaus werden die erhobenen Daten grundsätzlich nicht an Dritte weitergegeben. Ausnahmen:
 - Gesetzliche Verpflichtungen zur Datenweitergabe
-- Bei begründetem Verdacht auf Straftaten im Rahmen gesetzlicher Bestimmungen
 - Weitergabe an Sportverbände und Fördereinrichtungen im Rahmen der gesetzlich geregelten Talentförderung (gemäß HSchG und SchDSV)
 
 ## 8. App-Berechtigungen
