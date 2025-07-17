@@ -53,7 +53,7 @@ class StudentHistoryListTile extends StatelessWidget {
                 ),
             ],
           ),
-          trailing: createdDate.isAfter(DateTime.now().subtract(Duration(days: 2))) ? IconButton(onPressed: onDelete, icon: Icon(Icons.delete)): null,
+          trailing: IconButton(onPressed: onDelete, icon: Icon(Icons.delete)),
         ),
         const Divider(
           height: 1,

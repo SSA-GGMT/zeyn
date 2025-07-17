@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:zeyn/components/student/form_elements/student_range_form_element.dart';
 import 'package:zeyn/components/student/form_elements/student_select_form_element.dart';
 
@@ -24,6 +25,7 @@ class StudentCreateNewEntryView extends StatefulWidget {
 
 class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
   List<FormResult> results = [];
+  DateTime createdAt = DateTime.now();
 
   bool isFormComplete = false;
 
@@ -44,6 +46,74 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
     return Placeholder();
   }
 
+  Widget createdAtPicker() {
+    final DateFormat day = DateFormat('dd.MM.yyyy');
+    final DateFormat time = DateFormat('HH:mm');
+
+    return ListTile(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Row(
+              spacing: 4.0,
+              children: [
+                Icon(Icons.calendar_today),
+                Text(day.format(createdAt), style: Theme.of(context).textTheme.headlineMedium,)
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Row(
+              spacing: 4.0,
+              children: [
+                Text(time.format(createdAt), style: Theme.of(context).textTheme.headlineMedium,),
+                Icon(Icons.access_time),
+              ],
+            ),
+          ),
+        ],
+      ),
+      onTap: () async {
+        final pickedDate = await showDatePicker(
+          context: context,
+          initialDate: createdAt,
+          firstDate: DateTime(2020),
+          lastDate: DateTime.now(),
+        );
+        if (pickedDate != null && mounted) {
+          final pickedTime = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.fromDateTime(createdAt),
+          );
+          if (pickedTime != null && mounted) {
+            final newDateTime = DateTime(
+              pickedDate.year,
+              pickedDate.month,
+              pickedDate.day,
+              pickedTime.hour,
+              pickedTime.minute,
+            );
+            if (newDateTime.isBefore(DateTime.now()) || newDateTime.isAtSameMomentAs(DateTime.now())) {
+              setState(() {
+                createdAt = newDateTime;
+              });
+            }
+          }
+        }
+      },
+    );
+  }
 
   List<Widget> getFormWidgets() {
     logger.d('Results: $results');
@@ -108,7 +178,8 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
       "student": pb.authStore.record?.id,
       "course": pb.authStore.record?.data['course'],
       "school": pb.authStore.record?.data['school'],
-      "questionAnswer": jsonEncode(formData)
+      "questionAnswer": jsonEncode(formData),
+      "created_at": createdAt.toUtc().toIso8601String(),
     };
 
 
@@ -138,6 +209,8 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
       ),
         body: ListView(
           children: [
+            createdAtPicker(),
+            Divider(),
             ...getFormWidgets(),
             if (isFormComplete) Padding(
               padding: EdgeInsets.all(4.0),
