@@ -23,22 +23,17 @@ class App extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue[900]!),
         useMaterial3: true,
-        sliderTheme: const SliderThemeData(
-          year2023: false,
-        ),
+        sliderTheme: const SliderThemeData(year2023: false),
       ),
-      // commented out, due to currently hard coded text colors in some widgets
-      // darkTheme: ThemeData(
-      //         colorScheme: ColorScheme.fromSeed(
-      //           seedColor: Colors.blue[900]!,
-      //           brightness: Brightness.dark,
-      //         ),
-      //         useMaterial3: true,
-      //         sliderTheme: const SliderThemeData(
-      //           year2023: false,
-      //         ),
-      //       ),
-      //       themeMode: ThemeMode.system,
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue[900]!,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+        sliderTheme: const SliderThemeData(year2023: false),
+      ),
+      themeMode: ThemeMode.system,
       home: Scaffold(
         body: StreamBuilder(
           stream: pb.authStore.onChange,

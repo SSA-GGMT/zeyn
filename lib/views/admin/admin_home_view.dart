@@ -37,8 +37,9 @@ class _AdminHomeViewState extends State<AdminHomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: Text('Schuladministration'),
+        actions: [LogoutIconButton()],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -46,7 +47,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(16.0),
               ),
@@ -82,8 +83,6 @@ class _AdminHomeViewState extends State<AdminHomeView> {
                     ),
                   ],
                 ),
-                Spacer(),
-                LogoutIconButton(),
               ],
             ),
           ),

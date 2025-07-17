@@ -18,7 +18,11 @@ import '../../utils/logger.dart';
 import '../../utils/pdf/create_qr_logins_pdf.dart';
 
 class TeacherCourseDetailView extends StatefulWidget {
-  const TeacherCourseDetailView({super.key, required this.initCourseData, required this.popAndRefresh});
+  const TeacherCourseDetailView({
+    super.key,
+    required this.initCourseData,
+    required this.popAndRefresh,
+  });
   final RecordModel initCourseData;
   final Function popAndRefresh;
 
@@ -46,9 +50,9 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
       final updatedCourseData = await pb
           .collection('courses')
           .getOne(courseData.id);
-      final studentsData = await pb.collection('students').getList(
-        filter: 'course="${updatedCourseData.id}"',
-      );
+      final studentsData = await pb
+          .collection('students')
+          .getList(filter: 'course="${updatedCourseData.id}"');
       setState(() {
         students = studentsData.items;
         courseData = updatedCourseData;
@@ -138,14 +142,18 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Kursdetails'),
-        backgroundColor: Theme.of(context).primaryColorLight,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: [
-          if (isOwnCourse) IconButton(
-            onPressed: () {
-              showInfoDialog(context, "Sie haben Administrationsrechte für diesen Kurs.");
-            },
-            icon: Icon(Icons.admin_panel_settings,),
-          ),
+          if (isOwnCourse)
+            IconButton(
+              onPressed: () {
+                showInfoDialog(
+                  context,
+                  "Sie haben Administrationsrechte für diesen Kurs.",
+                );
+              },
+              icon: Icon(Icons.admin_panel_settings),
+            ),
           PopupMenuButton(
             itemBuilder:
                 (context) => [
@@ -179,7 +187,11 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                   if (isOwnCourse)
                     PopupMenuItem(
                       onTap: () async {
-                        final shouldDelete = await showConfirmDialog(context, message: "Sind Sie sicher, dass Sie diesen Kurs löschen möchten? Alle Schüler und deren Einträge werden gelöscht.");
+                        final shouldDelete = await showConfirmDialog(
+                          context,
+                          message:
+                              "Sind Sie sicher, dass Sie diesen Kurs löschen möchten? Alle Schüler und deren Einträge werden gelöscht.",
+                        );
                         if (!shouldDelete && !context.mounted) return;
                         showLoadingDialog(context);
                         try {
@@ -218,7 +230,7 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                   ),
                   color: Theme.of(context).secondaryHeaderColor,
                   border: Border.all(
-                    color: Theme.of(context).primaryColorLight,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     width: 2,
                   ),
                 ),
@@ -340,13 +352,19 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                 child: Column(
                   children:
                       students!
-                          .map((e) => StudentListTile(
-                          key: Key(e.id),
-                          initStudentData: e, form: courseData.data['questions'] as List<dynamic>,
-                          evalFields: List<String>.from(courseData.data['evalFunction'] as List),
-                        refreshCallback: () => refreshCourseData(showLoading: true),
-                      )
-                        ,)
+                          .map(
+                            (e) => StudentListTile(
+                              key: Key(e.id),
+                              initStudentData: e,
+                              form:
+                                  courseData.data['questions'] as List<dynamic>,
+                              evalFields: List<String>.from(
+                                courseData.data['evalFunction'] as List,
+                              ),
+                              refreshCallback:
+                                  () => refreshCourseData(showLoading: true),
+                            ),
+                          )
                           .toList(),
                 ),
               ),

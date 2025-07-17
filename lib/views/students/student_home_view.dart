@@ -20,7 +20,8 @@ class StudentHomeView extends StatefulWidget {
 class _StudentHomeViewState extends State<StudentHomeView> {
   RecordModel? courseModel;
   List<RecordModel>? historyEntries;
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   Future<void> getCourse() async {
     final course = await pb
@@ -33,11 +34,9 @@ class _StudentHomeViewState extends State<StudentHomeView> {
   }
 
   Future<void> getHistoryEntries() async {
-    final resultList = await pb.collection('studentRecords').getList(
-      page: 1,
-      perPage: 34,
-      sort: "created",
-    );
+    final resultList = await pb
+        .collection('studentRecords')
+        .getList(page: 1, perPage: 34, sort: "created");
 
     setState(() {
       historyEntries = resultList.items;
@@ -55,7 +54,6 @@ class _StudentHomeViewState extends State<StudentHomeView> {
         showErrorDialog(context);
       }
     }
-
   }
 
   @override
@@ -70,8 +68,13 @@ class _StudentHomeViewState extends State<StudentHomeView> {
       appBar: AppBar(
         title: Text(
           '${pb.authStore.record!.data['secondName']}, ${pb.authStore.record!.data['firstName']}',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onTertiary,
+          ),
         ),
-        actions: [LogoutIconButton()],
+        actions: [
+          LogoutIconButton(iconColor: Theme.of(context).colorScheme.onTertiary),
+        ],
         backgroundColor: Theme.of(context).colorScheme.tertiary,
       ),
       body: RefreshIndicator(
@@ -120,50 +123,64 @@ class _StudentHomeViewState extends State<StudentHomeView> {
                 ),
               ),
             ),
-            if (historyEntries?.isEmpty ?? true) SliverFillRemaining(
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.face,
-                      size: 48,
-                    ),
-                    Text("Keine Einträge!")
-                  ],
+            if (historyEntries?.isEmpty ?? true)
+              SliverFillRemaining(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.face, size: 48),
+                      Text("Keine Einträge!"),
+                    ],
+                  ),
                 ),
+              )
+            else
+              SliverList.builder(
+                itemCount: historyEntries!.length,
+                itemBuilder:
+                    (context, index) => StudentHistoryListTile(
+                      historyEntry:
+                          historyEntries![historyEntries!.length - index - 1],
+                      questionsDefinition: courseModel?.data['questions'],
+                      onDelete: () async {
+                        final delete = await showConfirmDialog(context);
+                        if (delete == false) return;
+                        showLoadingDialog(context);
+                        pb
+                            .collection('studentRecords')
+                            .delete(
+                              historyEntries![historyEntries!.length -
+                                      index -
+                                      1]
+                                  .id,
+                            )
+                            .then((_) {
+                              if (context.mounted) Navigator.of(context).pop();
+                              getHistoryEntries();
+                            })
+                            .catchError((e, s) {
+                              logger.e(e, stackTrace: s);
+                              if (context.mounted) {
+                                Navigator.of(context).pop();
+                                showErrorDialog(context);
+                              }
+                            });
+                      },
+                    ),
               ),
-            ) else SliverList.builder(
-              itemCount: historyEntries!.length,
-              itemBuilder: (context, index) => StudentHistoryListTile(
-                historyEntry: historyEntries![historyEntries!.length - index - 1],
-                questionsDefinition: courseModel?.data['questions'],
-                onDelete: () async {
-                  final delete = await showConfirmDialog(context);
-                  if (delete == false) return;
-                  showLoadingDialog(context);
-                  pb.collection('studentRecords').delete(historyEntries![historyEntries!.length - index - 1].id).then((_) {
-                    if (context.mounted) Navigator.of(context).pop();
-                    getHistoryEntries();
-                  }).catchError((e, s) {
-                    logger.e(e, stackTrace: s);
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                      showErrorDialog(context);
-                    }
-                  });
-                },
-              ),
-            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => StudentCreateNewEntryView(
-              form: courseModel?.data['questions'],
-            ))
+            MaterialPageRoute(
+              builder:
+                  (context) => StudentCreateNewEntryView(
+                    form: courseModel?.data['questions'],
+                  ),
+            ),
           );
           await _refreshIndicatorKey.currentState?.show();
         },

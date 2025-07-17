@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:zeyn/api/pocketbase.dart';
 
 class LogoutIconButton extends StatelessWidget {
-  const LogoutIconButton({super.key});
+  final Color? iconColor;
+  const LogoutIconButton({super.key, this.iconColor});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: const Icon(Icons.logout),
+      icon: Icon(Icons.logout, color: iconColor),
       tooltip: 'Ausloggen',
       onPressed: () async {
         final shouldLogout = await showDialog<bool>(
@@ -34,7 +34,6 @@ class LogoutIconButton extends StatelessWidget {
 
         if (shouldLogout == true) {
           pb.authStore.clear();
-          if (context.mounted) Phoenix.rebirth(context);
         }
       },
     );
