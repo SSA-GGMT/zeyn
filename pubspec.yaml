@@ -6,7 +6,7 @@ description: "Zeyn allows you to track the activity of your students."
 
 publish_to: 'none'
 
-version: 1.1.0+2
+version: 1.2.0+3
 
 environment:
   sdk: ^3.7.2
