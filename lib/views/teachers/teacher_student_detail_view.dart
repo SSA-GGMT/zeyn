@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:zeyn/api/pocketbase.dart';
 import 'package:zeyn/components/student/student_history_list_tile.dart';
-import 'package:zeyn/utils/logger.dart';
 
 class TeacherStudentDetailView extends StatefulWidget {
   final RecordModel initStudentData;
@@ -192,7 +191,6 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
     String evalField,
     dynamic definition,
   ) {
-    logger.d(definition['max_color']);
     return LineChartBarData(
       spots:
           _studentRecords
@@ -278,13 +276,17 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
             verticalInterval: 1,
             getDrawingHorizontalLine: (value) {
               return FlLine(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onPrimaryContainer.withAlpha(80),
                 strokeWidth: 1,
               );
             },
             getDrawingVerticalLine: (value) {
               return FlLine(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onPrimaryContainer.withAlpha(80),
                 strokeWidth: 1,
                 dashArray: [1, 4],
               );
