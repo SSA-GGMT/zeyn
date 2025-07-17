@@ -18,6 +18,8 @@ Color gradientColorAt(Color A, Color B, double t) {
   return Color.fromARGB(a, r, g, b);
 }
 
+enum ConditionGeneratorHistoryType { last5days, lastday }
+
 class ConditionGenerator {
   bool containsAny(Iterable keys, Iterable values) {
     for (var value in values) {
@@ -29,36 +31,65 @@ class ConditionGenerator {
   static List<ConditionColor> generateConditionColors({
     List<Map> studentRecords = const [],
     List<String> evalFields = const [],
+    ConditionGeneratorHistoryType historyType =
+        ConditionGeneratorHistoryType.last5days,
   }) {
     var result = <ConditionColor>[];
 
     for (var evalField in evalFields) {
-      List<DayCollection> evalFiltered = [
-        DayCollection(0, 10, []),
-        DayCollection(1, 9, []),
-        DayCollection(2, 6, []),
-        DayCollection(3, 2, []),
-        DayCollection(4, 1, [])
-      ];
+      if (historyType == ConditionGeneratorHistoryType.lastday) {
+        // For last day, only consider records from the last 24 hours
+        List<dynamic> lastDayRecords = [];
 
-      for (var record in studentRecords) {
-        final DateTime createdDate = DateTime.parse(record['created']);
-        final daysAgo = DateTime.now().difference(createdDate).inDays;
-        if (daysAgo < 5 && record.keys.contains(evalField)) {
-          evalFiltered[daysAgo].studentRecords.add(record);
+        for (var record in studentRecords) {
+          final DateTime createdDate = DateTime.parse(record['created']);
+          final hoursDifference =
+              DateTime.now().difference(createdDate).inHours;
+          if (hoursDifference <= 24 && record.keys.contains(evalField)) {
+            lastDayRecords.add(record);
+          }
         }
-      }
 
-      result.add(
-        ConditionColor(_mixColor(
-          evalFiltered.map(
-            (dayCollection) => ColorPart(
-              dayCollection.getAvgColor(evalField),
-              dayCollection.weight,
+        // Create a single collection for the last day with maximum weight
+        DayCollection lastDayCollection = DayCollection(0, 10, lastDayRecords);
+
+        result.add(
+          ConditionColor(lastDayCollection.getAvgColor(evalField), evalField),
+        );
+      } else {
+        // Original last5days logic
+        List<DayCollection> evalFiltered = [
+          DayCollection(0, 8, []),
+          DayCollection(1, 7, []),
+          DayCollection(2, 6, []),
+          DayCollection(3, 2, []),
+          DayCollection(4, 1, []),
+        ];
+
+        for (var record in studentRecords) {
+          final DateTime createdDate = DateTime.parse(record['created']);
+          final daysAgo = DateTime.now().difference(createdDate).inDays;
+          if (daysAgo < 5 && record.keys.contains(evalField)) {
+            evalFiltered[daysAgo].studentRecords.add(record);
+          }
+        }
+
+        result.add(
+          ConditionColor(
+            _mixColor(
+              evalFiltered
+                  .map(
+                    (dayCollection) => ColorPart(
+                      dayCollection.getAvgColor(evalField),
+                      dayCollection.weight,
+                    ),
+                  )
+                  .toList(),
             ),
-          ).toList()
-        ), evalField)
-      );
+            evalField,
+          ),
+        );
+      }
     }
 
     return result;
@@ -85,18 +116,13 @@ class DayCollection {
         final colorStr = record[evalField];
         final double? colorValue = double.tryParse(colorStr.toString());
         colors.add(
-          gradientColorAt(
-            Colors.green,
-            Colors.red,
-            (colorValue ?? 5)/10,
-          ),
+          gradientColorAt(Colors.green, Colors.red, (colorValue ?? 5) / 10),
         );
       }
     }
     if (colors.isEmpty) return Colors.grey.shade500;
     return _mixColor(colors.map((color) => ColorPart(color, 1)).toList());
   }
-
 
   DayCollection(this.daysAgo, this.weight, this.studentRecords);
 }

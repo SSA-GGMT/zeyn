@@ -10,7 +10,13 @@ import '../../utils/logger.dart';
 import '../student_qr_login_screen.dart';
 
 class StudentListTile extends StatefulWidget {
-  const StudentListTile({super.key, required this.initStudentData, required this.form, required this.evalFields, required this.refreshCallback});
+  const StudentListTile({
+    super.key,
+    required this.initStudentData,
+    required this.form,
+    required this.evalFields,
+    required this.refreshCallback,
+  });
   final RecordModel initStudentData;
   final List<dynamic> form;
   final List<String> evalFields;
@@ -24,6 +30,7 @@ class _StudentListTileState extends State<StudentListTile> {
   late final List<StudentListTileAction> _actions;
   late List<RecordModel> studentRecords;
   late List<ConditionColor> conditionColors;
+  late List<ConditionColor> conditionColors24h;
   bool loadingRecords = true;
 
   @override
@@ -67,24 +74,48 @@ class _StudentListTileState extends State<StudentListTile> {
 
   Future<void> _loadStudentRecords() async {
     // you can also fetch all records at once via getFullList
-      final records = await pb.collection('studentRecords').getFullList(
-        // not older than 7 days
-        filter: 'student = "${widget.initStudentData.id}" && created > "${DateTime.now().subtract(const Duration(days: 7)).toIso8601String()}"',
-      );
+    final records = await pb
+        .collection('studentRecords')
+        .getFullList(
+          // not older than 7 days
+          filter:
+              'student = "${widget.initStudentData.id}" && created > "${DateTime.now().subtract(const Duration(days: 7)).toIso8601String()}"',
+        );
 
-      studentRecords = records;
-      List<Map> studentRecordsMap = studentRecords.map((e) =>
-      {
-        ...e.data['questionAnswer'],
-        'created': e.data['created'],
-      }).toList(growable: false);
-      conditionColors = ConditionGenerator.generateConditionColors(studentRecords: studentRecordsMap, evalFields: widget.evalFields);
+    studentRecords = records;
 
-      setState(() {
+    // Filter records for last 24 hours from the existing data
+    final DateTime twentyFourHoursAgo = DateTime.now().subtract(
+      const Duration(hours: 24),
+    );
+    final records24h =
+        records.where((record) {
+          final DateTime createdDate = DateTime.parse(record.data['created']);
+          return createdDate.isAfter(twentyFourHoursAgo);
+        }).toList();
+
+    List<Map> studentRecordsMap = studentRecords
+        .map((e) => {...e.data['questionAnswer'], 'created': e.data['created']})
+        .toList(growable: false);
+    conditionColors = ConditionGenerator.generateConditionColors(
+      studentRecords: studentRecordsMap,
+      evalFields: widget.evalFields,
+    );
+
+    List<Map> studentRecordsMap24h = records24h
+        .map((e) => {...e.data['questionAnswer'], 'created': e.data['created']})
+        .toList(growable: false);
+    conditionColors24h = ConditionGenerator.generateConditionColors(
+      studentRecords: studentRecordsMap24h,
+      evalFields: widget.evalFields,
+      historyType: ConditionGeneratorHistoryType.lastday,
+    );
+
+    setState(() {
       loadingRecords = false;
     });
   }
-  
+
   String getConditionLabel(String id) {
     final condition = widget.form.firstWhere(
       (element) => element['id'] == id,
@@ -92,36 +123,72 @@ class _StudentListTileState extends State<StudentListTile> {
     );
     return condition['label'] ?? 'Unbekannt';
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
         "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${widget.initStudentData.data['kaderStatus']})",
       ),
-      subtitle: loadingRecords ? LinearProgressIndicator() : Wrap(
-        spacing: 2,
-        children: conditionColors.map(
-              (conditionColor) => Container(
-                padding: EdgeInsets.symmetric(horizontal: 2.0),
-                margin: EdgeInsets.symmetric(vertical: 1.0),
-                decoration: BoxDecoration(
-                  color: conditionColor.color,
-                  borderRadius: BorderRadius.circular(4.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
+      subtitle:
+          loadingRecords
+              ? LinearProgressIndicator()
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    spacing: 2,
+                    children: [
+                      Icon(Icons.history, size: 20),
+                      ...conditionColors.map(
+                        (conditionColor) => Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2.0),
+                          margin: EdgeInsets.symmetric(vertical: 1.0),
+                          decoration: BoxDecoration(
+                            color: conditionColor.color,
+                            borderRadius: BorderRadius.circular(4.0),
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                          ),
+                          child: Text(
+                            getConditionLabel(conditionColor.id),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                child: Text(getConditionLabel(conditionColor.id),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12.0,
+                  SizedBox(height: 4),
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    spacing: 2,
+                    children: [
+                      Icon(Icons.calendar_today, size: 20),
+                      ...conditionColors24h.map(
+                        (conditionColor) => Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2.0),
+                          margin: EdgeInsets.symmetric(vertical: 1.0),
+                          decoration: BoxDecoration(
+                            color: conditionColor.color,
+                            borderRadius: BorderRadius.circular(4.0),
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                          ),
+                          child: Text(
+                            getConditionLabel(conditionColor.id),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              )
-          ).toList(),
-      ),
+                ],
+              ),
       leading: const Icon(Icons.school),
       trailing: PopupMenuButton<StudentListTileAction>(
         onSelected: (StudentListTileAction choice) {
