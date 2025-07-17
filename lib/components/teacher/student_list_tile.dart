@@ -3,6 +3,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';
+import 'package:zeyn/views/teachers/teacher_student_detail_view.dart';
 
 import '../../api/pocketbase.dart';
 import '../../utils/condition_generator.dart';
@@ -166,7 +167,7 @@ class _StudentListTileState extends State<StudentListTile> {
                     alignment: WrapAlignment.start,
                     spacing: 2,
                     children: [
-                      Icon(Icons.calendar_today, size: 20),
+                      Icon(Icons.fiber_new, size: 20),
                       ...conditionColors24h.map(
                         (conditionColor) => Container(
                           padding: EdgeInsets.symmetric(horizontal: 2.0),
@@ -206,6 +207,18 @@ class _StudentListTileState extends State<StudentListTile> {
           }).toList();
         },
       ),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder:
+                (context) => TeacherStudentDetailView(
+                  initStudentData: widget.initStudentData,
+                  questionsDefinition: widget.form,
+                  evalFields: widget.evalFields,
+                ),
+          ),
+        );
+      },
     );
   }
 }
