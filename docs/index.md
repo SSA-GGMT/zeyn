@@ -158,7 +158,7 @@ Die Anwendung benötigt Internetzugang zur Kommunikation mit den Applikationsser
 - Wird ausschließlich zum Scannen von QR-Codes beim Schüler-Login verwendet
 - Es werden keine Fotos gespeichert oder übertragen
 - Die Berechtigung kann nach erfolgtem Login wieder entzogen werden
-- Die Anwendung ist auch ohne Kamera-Berechtigung nutzbar (alternative Anmeldung möglich)
+
 
 ## 9. Cookies und Tracking
 
