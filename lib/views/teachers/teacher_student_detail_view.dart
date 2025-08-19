@@ -149,6 +149,7 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
             StudentHistoryListTile(
               historyEntry: record,
               questionsDefinition: widget.questionsDefinition,
+              hideDelete: true,
               onDelete: () {},
             ),
             Divider(),
@@ -251,71 +252,102 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
   }) {
     return SizedBox(
       height: 180,
-      child: LineChart(
-        LineChartData(
-          borderData: FlBorderData(show: false),
-          titlesData: FlTitlesData(
-            show: true,
-            rightTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            topTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            bottomTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            leftTitles: const AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-          ),
-          gridData: FlGridData(
-            show: true,
-            drawVerticalLine: true,
-            horizontalInterval: 1,
-            verticalInterval: 1,
-            getDrawingHorizontalLine: (value) {
-              return FlLine(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onPrimaryContainer.withAlpha(80),
-                strokeWidth: 1,
-              );
-            },
-            getDrawingVerticalLine: (value) {
-              return FlLine(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onPrimaryContainer.withAlpha(80),
-                strokeWidth: 1,
-                dashArray: [1, 4],
-              );
-            },
-          ),
-          lineBarsData: [_buildLineChartBarData(evalField, definition)],
-          lineTouchData: LineTouchData(
-            touchTooltipData: LineTouchTooltipData(
-              getTooltipItems: (List<LineBarSpot> touchedSpots) {
-                return touchedSpots.map((spot) {
-                  final DateTime date = DateTime.now().subtract(
-                    Duration(days: spot.x.toInt()),
-                  );
-                  return LineTooltipItem(
-                    '${DateFormat('dd.MM.yyyy').format(date)}\n${spot.y.toStringAsFixed(2)}/${definition['max']}',
-                    TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 10,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(
+                      int.parse(
+                        definition['max_color'].replaceFirst('#', '0xFF'),
+                      ),
                     ),
-                  );
-                }).toList();
-              },
+                    Color(
+                      int.parse(
+                        definition['min_color'].replaceFirst('#', '0xFF'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-          minY: definition['min']!.toDouble(),
-          maxY: definition['max']!.toDouble(),
-          minX: 0,
-          maxX: selectedRangeDuration.inDays.toDouble(),
-        ),
+          Expanded(
+            child: LineChart(
+              LineChartData(
+                borderData: FlBorderData(show: false),
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  bottomTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  leftTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                ),
+                gridData: FlGridData(
+                  show: true,
+                  drawVerticalLine: true,
+                  horizontalInterval: 1,
+                  verticalInterval: 1,
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer.withAlpha(80),
+                      strokeWidth: 1,
+                    );
+                  },
+                  getDrawingVerticalLine: (value) {
+                    return FlLine(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer.withAlpha(80),
+                      strokeWidth: 1,
+                      dashArray: [1, 4],
+                    );
+                  },
+                ),
+                lineBarsData: [_buildLineChartBarData(evalField, definition)],
+                lineTouchData: LineTouchData(
+                  touchTooltipData: LineTouchTooltipData(
+                    getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                      return touchedSpots.map((spot) {
+                        final DateTime date = DateTime.now().subtract(
+                          Duration(days: spot.x.toInt()),
+                        );
+                        return LineTooltipItem(
+                          '${DateFormat('dd.MM.yyyy').format(date)}\n${spot.y.toStringAsFixed(2)}/${definition['max']}',
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+                minY: definition['min']!.toDouble(),
+                maxY: definition['max']!.toDouble(),
+                minX: 0,
+                maxX: selectedRangeDuration.inDays.toDouble(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

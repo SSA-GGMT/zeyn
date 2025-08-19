@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:zeyn/components/feedback_button.dart';
 import 'package:zeyn/components/logout_icon_button.dart';
 import 'package:zeyn/components/student/student_history_list_tile.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
@@ -73,6 +74,7 @@ class _StudentHomeViewState extends State<StudentHomeView> {
           ),
         ),
         actions: [
+          FeedbackButton(urlSubPath: 'student'),
           LogoutIconButton(iconColor: Theme.of(context).colorScheme.onTertiary),
         ],
         backgroundColor: Theme.of(context).colorScheme.tertiary,

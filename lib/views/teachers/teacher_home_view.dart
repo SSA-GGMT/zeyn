@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:zeyn/components/feedback_button.dart';
 import 'package:zeyn/components/logout_icon_button.dart';
 import 'package:zeyn/views/teachers/teacher_add_course_view.dart';
 
@@ -75,7 +76,7 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
         title: Text('Zeyn'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        actions: [LogoutIconButton()],
+        actions: [FeedbackButton(urlSubPath: 'teacher'), LogoutIconButton()],
       ),
       body: Column(
         children: [
