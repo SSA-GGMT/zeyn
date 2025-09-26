@@ -1,6 +1,6 @@
 # Datenschutzerklärung Z.E.Y.N.
 
-**Stand: 17.07.2025**
+**Stand: 26.09.2025**
 
 ## 1. Verantwortlicher
 
@@ -72,11 +72,56 @@ Die Weitergabe und Nutzung der erhobenen Daten ist stets an die Wahrung der Date
 - Nachname
 - Kader-Status (gesetzt durch Schule)
 - Datum der Erstellung
-- Umfrageantworten: Antworten zu den durch den Kurslehrer definierten Fragen (Speicherung für 1 Jahr, automatische Löschung)
+- Erhobene Daten:
 
-#### 4.2.2 Lehrerdaten
+# Datenkategorien
+
+- **Aktivität**  
+  (z. B. TFG, LG, Blockunterricht, Athletiktraining, Nachführunterricht, Vereinstraining, Kadertraining, Vereinsspiel, JTFO-WK-Spiel, Fitness, Sonstige)
+
+- **Anwesenheit**  
+  (z. B. Anwesend, Verletzung/Krankheit, Entfallen, Beurlaubt, Sonstiges)
+
+## Bewertungsfelder (Range-Skalen)
+
+- **Anzahl der Spiele** (`games_count`)  
+  Wertebereich: 0 – 8
+
+- **Taktik** (`tactics_eval`)  
+  Wertebereich: 0 – 10
+
+- **Technik** (`technique_eval`)  
+  Wertebereich: 0 – 10
+
+- **Kondition** (`condition_eval`)  
+  Wertebereich: 0 – 10
+
+- **Fitness** (`fitness_eval`)  
+  Wertebereich: 0 – 10
+
+- **Mentale Anforderungen** (`mental_demand`)  
+  Wertebereich: 0 – 10
+
+- **Körperliche Anforderungen** (`physical_demand`)  
+  Wertebereich: 0 – 10
+
+- **Zeitdruck** (`temporal_demand`)  
+  Wertebereich: 0 – 10
+
+- **Leistungsempfinden** (`performance`)  
+  Wertebereich: 0 – 10
+
+- **Anstrengung** (`effort`)  
+  Wertebereich: 0 – 10
+
+- **Frustration** (`frustration`)  
+  Wertebereich: 0 – 10
+
+
+#### 4.2.2 Beamtinnen, Beamte und Beschäftigte des Landes Hessen oder im Auftrag des Regionalen Talent- und Förderzentrums
 - E-Mail-Adresse
 - Zugeordnete Schule
+- Zugeordnete Personen
 - Kürzel
 - Vorname
 - Nachname
@@ -91,7 +136,8 @@ Auf dem Endgerät des Nutzers wird ausschließlich die Session-ID gespeichert, u
 ## 5. Speicherort und Sicherheit
 
 ### 5.1 Speicherort
-Die Daten werden bei unserem Auftragsverarbeiter Hetzner Online GmbH in einem ISO 27001 zertifizierten Rechenzentrum in Deutschland gespeichert. Die Server befinden sich ausschließlich in der Europäischen Union.
+Die Daten werden bei unserem Auftragsverarbeiter Hetzner Online GmbH in einem ISO 27001 zertifizierten Rechenzentrum in Deutschland gespeichert. Serverstandort: Datacenter fsn1-dc14; Stadt
+Falkenstein, Deutschland
 
 ### 5.2 Auftragsverarbeitung
 Für das Hosting und die technische Bereitstellung der Z.E.Y.N.-Anwendung haben wir einen Auftragsverarbeitungsvertrag gemäß Art. 28 DSGVO mit der Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen, abgeschlossen. Hetzner verarbeitet personenbezogene Daten ausschließlich nach unseren Weisungen und hat sich zur Einhaltung der datenschutzrechtlichen Bestimmungen verpflichtet.
@@ -124,13 +170,11 @@ Unser Auftragsverarbeiter hat umfangreiche technische und organisatorische Maßn
 ## 6. Speicherdauer und Löschung
 
 ### 6.1 Speicherdauer
-- **Sitzungsdaten**: 5 Tage (automatische Löschung)
 - **Umfrageantworten**: 1 Jahr (automatische Löschung)
 - **Account-Daten (Schüler/Lehrer)**: Bis zum Ende der Schulzugehörigkeit, spätestens jedoch zum Ende des Schuljahres nach Verlassen der Schule
 
 ### 6.2 Löschung
-- Schüler- und Lehreraccounts werden automatisch beim Verlassen der Schule gelöscht
-- Manuelle Löschung kann durch die Schule oder den vorgesetzten Lehrer erfolgen
+- Manuelle Löschung kann durch den Verantwortlichen am staatlichen Schulamt gelöscht werden.
 - Bei Löschung werden zugehörige Logs innerhalb von 5 Tagen entfernt
 
 ## 7. Datenempfänger und Übermittlung
@@ -217,4 +261,4 @@ Bei Fragen zum Datenschutz wenden Sie sich bitte an:
 
 ---
 
-**Stand dieser Datenschutzerklärung: 17.07.2025**
+**Stand dieser Datenschutzerklärung: 26.09.2025**
