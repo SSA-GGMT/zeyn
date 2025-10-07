@@ -125,11 +125,24 @@ class _StudentListTileState extends State<StudentListTile> {
     return condition['label'] ?? 'Unbekannt';
   }
 
+  Color colorBySex(String sex) {
+    switch (sex) {
+      case 'Männlich':
+        return Colors.blue[900]!;
+      case 'Weiblich':
+        return Colors.pink;
+      case 'Divers':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${widget.initStudentData.data['kaderStatus']})",
+        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${widget.initStudentData.data['kaderStatus']}, ${widget.initStudentData.data['birthYear']})",
       ),
       subtitle:
           loadingRecords
@@ -190,7 +203,7 @@ class _StudentListTileState extends State<StudentListTile> {
                   ),
                 ],
               ),
-      leading: const Icon(Icons.school),
+      leading: Icon(Icons.school, color: colorBySex(widget.initStudentData.data['sex']),),
       trailing: PopupMenuButton<StudentListTileAction>(
         onSelected: (StudentListTileAction choice) {
           choice.onTap();

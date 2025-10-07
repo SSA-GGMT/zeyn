@@ -23,6 +23,8 @@ class _TeacherAddStudentToCourseViewState
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _secondNameController = TextEditingController();
   String kaderStatus = 'TSP';
+  String sex = 'Männlich';
+  int birthYear = DateTime.now().year - 14;
 
   void addStudent() async {
     showLoadingDialog(context, message: 'Schüler wird hinzugefügt...');
@@ -44,6 +46,8 @@ class _TeacherAddStudentToCourseViewState
       "verified": true,
       "email": fictionalMail,
       "kaderStatus": kaderStatus,
+      "sex": sex,
+      "birthYear": birthYear,
     };
 
     try {
@@ -115,13 +119,56 @@ class _TeacherAddStudentToCourseViewState
                     kaderStatus = value!;
                   });
                 },
-                dropdownMenuEntries: ['TSP', 'NK', 'LK']
+                dropdownMenuEntries: ['TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
                     .map(
                       (String value) => DropdownMenuEntry<String>(
                         value: value,
                         label: value,
                       ),
                     ).toList(),
+              )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownMenu<String>(
+                label: Text('Geschlecht'),
+                width: double.infinity,
+                initialSelection: 'Männlich',
+                onSelected: (String? value) {
+                  setState(() {
+                    sex = value!;
+                  });
+                },
+                dropdownMenuEntries: ['Männlich', 'Weiblich', 'Divers']
+                    .map(
+                      (String value) => DropdownMenuEntry<String>(
+                        value: value,
+                        label: value,
+                      ),
+                    ).toList(),
+              )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownMenu<int>(
+                label: Text('Geburtsjahr'),
+                width: double.infinity,
+                initialSelection: birthYear,
+                onSelected: (int? value) {
+                  setState(() {
+                    birthYear = value!;
+                  });
+                },
+                dropdownMenuEntries: List<DropdownMenuEntry<int>>.generate(
+                  50,
+                  (int index) {
+                    final year = DateTime.now().year - index;
+                    return DropdownMenuEntry<int>(
+                      value: year,
+                      label: year.toString(),
+                    );
+                  },
+                ),
               )
             ),
             Padding(
