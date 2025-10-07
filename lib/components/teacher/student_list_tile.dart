@@ -3,6 +3,7 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';
+import 'package:zeyn/views/teachers/teacher_edit_student_details.dart';
 import 'package:zeyn/views/teachers/teacher_student_detail_view.dart';
 
 import '../../api/pocketbase.dart';
@@ -14,11 +15,13 @@ class StudentListTile extends StatefulWidget {
   const StudentListTile({
     super.key,
     required this.initStudentData,
+    required this.courseData,
     required this.form,
     required this.evalFields,
     required this.refreshCallback,
   });
   final RecordModel initStudentData;
+  final RecordModel courseData;
   final List<dynamic> form;
   final List<String> evalFields;
   final Function refreshCallback;
@@ -45,6 +48,21 @@ class _StudentListTileState extends State<StudentListTile> {
             context,
             StudentQrModel.fromRecordModel(widget.initStudentData),
           );
+        },
+      ),
+      StudentListTileAction(
+        icon: Icon(Icons.edit),
+        label: 'Bearbeiten',
+        onTap: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TeacherEditStudentDetailsView(
+                courseData: widget.courseData,
+                initStudentData: widget.initStudentData,
+              ),
+            ),
+          );
+          widget.refreshCallback();
         },
       ),
       StudentListTileAction(

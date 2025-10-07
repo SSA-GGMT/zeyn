@@ -356,6 +356,7 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                             (e) => StudentListTile(
                               key: Key(e.id),
                               initStudentData: e,
+                              courseData: courseData,
                               form:
                                   courseData.data['questions'] as List<dynamic>,
                               evalFields: List<String>.from(
