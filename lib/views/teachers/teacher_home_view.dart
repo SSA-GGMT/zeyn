@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:zeyn/components/feedback_button.dart';
-import 'package:zeyn/components/logout_icon_button.dart';
+import 'package:zeyn/components/shared/feedback_button.dart';
+import 'package:zeyn/components/shared/logout_icon_button.dart';
 import 'package:zeyn/views/teachers/teacher_add_course_view.dart';
 
 import '../../api/pocketbase.dart';

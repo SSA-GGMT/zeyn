@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../api/pocketbase.dart';
-import '../utils/dialogs/show_error_dialog.dart';
-import '../utils/dialogs/show_loading_dialog.dart';
-import '../utils/logger.dart';
+import '../../api/pocketbase.dart';
+import '../../utils/dialogs/show_error_dialog.dart';
+import '../../utils/dialogs/show_loading_dialog.dart';
+import '../../utils/logger.dart';
 
 void showAdministrationLoginModal(BuildContext context) {
   final schoolNumberController = TextEditingController();

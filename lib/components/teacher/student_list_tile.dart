@@ -9,7 +9,7 @@ import 'package:zeyn/views/teachers/teacher_student_detail_view.dart';
 import '../../api/pocketbase.dart';
 import '../../utils/condition_generator.dart';
 import '../../utils/logger.dart';
-import '../student_qr_login_screen.dart';
+import '../shared/student_qr_login_screen.dart';
 
 class StudentListTile extends StatefulWidget {
   const StudentListTile({

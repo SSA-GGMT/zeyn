@@ -4,7 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import '../../api/pocketbase.dart';
-import '../../components/student_qr_login_screen.dart';
+import '../../components/shared/student_qr_login_screen.dart';
 import '../logger.dart';
 
 Future<Uint8List> createPDF(

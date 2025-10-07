@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zeyn/api/pocketbase.dart';
-import 'package:zeyn/components/student_qr_login_screen.dart';
+import 'package:zeyn/components/shared/student_qr_login_screen.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';

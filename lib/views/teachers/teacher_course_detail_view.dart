@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:zeyn/components/student_qr_login_screen.dart';
+import 'package:zeyn/components/shared/student_qr_login_screen.dart';
 import 'package:zeyn/components/teacher/student_list_tile.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_error_dialog.dart';

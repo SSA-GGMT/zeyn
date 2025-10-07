@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:zeyn/components/feedback_button.dart';
-import 'package:zeyn/components/logout_icon_button.dart';
+import 'package:zeyn/components/shared/feedback_button.dart';
+import 'package:zeyn/components/shared/logout_icon_button.dart';
 import 'package:zeyn/components/student/student_history_list_tile.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
 import 'package:zeyn/views/students/student_create_new_entry_view.dart';

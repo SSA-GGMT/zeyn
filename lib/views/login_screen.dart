@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../api/pocketbase.dart';
-import '../components/administration_login_modal.dart';
-import '../components/barcode_scanner_simple.dart';
-import '../components/student_qr_login_screen.dart';
+import '../components/shared/administration_login_modal.dart';
+import '../components/shared/barcode_scanner_simple.dart';
+import '../components/shared/student_qr_login_screen.dart';
 import '../utils/dialogs/show_loading_dialog.dart';
 import '../utils/logger.dart';
 import '../utils/dialogs/show_error_dialog.dart';
