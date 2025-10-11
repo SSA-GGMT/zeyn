@@ -4,6 +4,7 @@ import 'package:zeyn/components/shared/feedback_button.dart';
 import 'package:zeyn/components/shared/logout_icon_button.dart';
 import 'package:zeyn/components/student/student_history_list_tile.dart';
 import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
+import 'package:zeyn/views/shared/course_book_history_view.dart';
 import 'package:zeyn/views/students/student_create_new_entry_view.dart';
 
 import '../../api/pocketbase.dart';
@@ -103,23 +104,34 @@ class _StudentHomeViewState extends State<StudentHomeView> {
                     spacing: 8.0,
                     children: [
                       Icon(Icons.school, size: 40),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "${courseModel?.data['courseTitle']} (${courseModel?.data['expand']['sport']['name']})",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          Text(
-                            courseModel?.data['expand']['school']['name'] ?? '',
-                            style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontSize: 15,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "${courseModel?.data['courseTitle']} (${courseModel?.data['expand']['sport']['name']})",
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
-                          ),
-                        ],
+                            Text(
+                              courseModel?.data['expand']['school']['name'] ??
+                                  '',
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                      courseModel != null ? IconButton(
+                        icon: Icon(Icons.history),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => CourseBookHistoryView(course: courseModel!)),
+                          );
+                        },
+                      ) : SizedBox.shrink(),
                     ],
                   ),
                 ),

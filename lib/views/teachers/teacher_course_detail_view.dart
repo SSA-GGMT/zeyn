@@ -8,11 +8,12 @@ import 'package:zeyn/utils/dialogs/show_confirm_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_error_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_info_dialog.dart';
 import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';
+import 'package:zeyn/views/shared/course_book_history_view.dart';
 import 'package:zeyn/views/teachers/teacher_add_student_to_course_view.dart';
 import 'package:printing/printing.dart';
 
 import '../../api/pocketbase.dart';
-import '../../components/teacher/async_teacher_chip.dart';
+import '../../components/teacher/teacher_chip.dart';
 import '../../components/teacher/teacher_selector.dart';
 import '../../utils/logger.dart';
 import '../../utils/pdf/create_qr_logins_pdf.dart';
@@ -52,7 +53,7 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
           .getOne(courseData.id);
       final studentsData = await pb
           .collection('students')
-          .getList(filter: 'course="${updatedCourseData.id}"');
+          .getList(filter: 'course = "${updatedCourseData.id}"');
       setState(() {
         students = studentsData.items;
         courseData = updatedCourseData;
@@ -144,6 +145,16 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
         title: Text('Kursdetails'),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: [
+          IconButton(
+            icon: Icon(Icons.history),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CourseBookHistoryView(course: courseData),
+                ),
+              );
+            },
+          ),
           if (isOwnCourse)
             IconButton(
               onPressed: () {

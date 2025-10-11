@@ -3,7 +3,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 import '../../api/pocketbase.dart';
 import '../../views/teachers/teacher_course_detail_view.dart';
-import 'async_teacher_chip.dart';
+import 'teacher_chip.dart';
 
 class CourseListTile extends StatelessWidget {
   const CourseListTile({
