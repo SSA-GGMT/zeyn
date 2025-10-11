@@ -6,11 +6,7 @@ Future<void> showInfoDialog(BuildContext context, String message) {
     builder: (context) {
       return AlertDialog(
         title: const Row(
-          children: [
-            Icon(Icons.info),
-            SizedBox(width: 8),
-            Text('Information'),
-          ],
+          children: [Icon(Icons.info), SizedBox(width: 8), Text('Information')],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,

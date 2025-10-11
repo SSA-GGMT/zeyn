@@ -60,8 +60,10 @@ class CourseListTile extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder:
-                (context) =>
-                    TeacherCourseDetailView(initCourseData: courseData, popAndRefresh: popAndRefresh,),
+                (context) => TeacherCourseDetailView(
+                  initCourseData: courseData,
+                  popAndRefresh: popAndRefresh,
+                ),
           ),
         );
       },

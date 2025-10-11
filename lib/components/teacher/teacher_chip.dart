@@ -94,9 +94,12 @@ class _AsyncTeacherChipState extends State<AsyncTeacherChip> {
   }
 }
 
-
 class SyncTeacherChip extends StatelessWidget {
-  const SyncTeacherChip({super.key, required this.teacherRecordData, this.actions});
+  const SyncTeacherChip({
+    super.key,
+    required this.teacherRecordData,
+    this.actions,
+  });
   final Map<String, dynamic> teacherRecordData;
   final List<Widget>? actions;
 
@@ -120,33 +123,35 @@ class SyncTeacherChip extends StatelessWidget {
       onTap: () {
         showDialog(
           context: context,
-          builder: (context) => SimpleDialog(
-            title: Row(
-              children: [
-                Icon(Icons.person),
-                Text("$firstName $secondName ($krz)"),
-              ],
-            ),
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          builder:
+              (context) => SimpleDialog(
+                title: Row(
+                  children: [
+                    Icon(Icons.person),
+                    Text("$firstName $secondName ($krz)"),
+                  ],
+                ),
                 children: [
-                  Icon(Icons.email),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size.zero,
-                    ),
-                    onPressed: email.isNotEmpty
-                        ? () => launchUrl(Uri.parse('mailto:$email'))
-                        : null,
-                    child: Text(email),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.email),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                        ),
+                        onPressed:
+                            email.isNotEmpty
+                                ? () => launchUrl(Uri.parse('mailto:$email'))
+                                : null,
+                        child: Text(email),
+                      ),
+                    ],
                   ),
+                  if (actions != null) ...actions!,
                 ],
               ),
-              if (actions != null) ...actions!,
-            ],
-          ),
         );
       },
     );

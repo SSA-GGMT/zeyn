@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zeyn/components/student/form_elements/form_result.dart';
 
-
 class StudentSelectFormElement extends StatelessWidget {
   const StudentSelectFormElement({
     super.key,
@@ -52,24 +51,34 @@ class StudentSelectFormElement extends StatelessWidget {
           Text(definition['label']),
           DropdownButtonFormField<String>(
             value: value,
-            items: (definition['options'] as List<dynamic>)
-                .map<DropdownMenuItem<String>>((option) {
-              return DropdownMenuItem<String>(
-                value: option['label'],
-                child: Text("${option['label']}${option['hint'] != null ? " (${option['hint']})" : ""}"),
-              );
-            }).toList(),
+            items:
+                (definition['options'] as List<dynamic>).map<
+                  DropdownMenuItem<String>
+                >((option) {
+                  return DropdownMenuItem<String>(
+                    value: option['label'],
+                    child: Text(
+                      "${option['label']}${option['hint'] != null ? " (${option['hint']})" : ""}",
+                    ),
+                  );
+                }).toList(),
             onChanged: (String? newValue) {
               if (newValue != null) {
-                final selectedOption = definition['options']
-                    .firstWhere((option) => option['label'] == newValue);
-                final hiddenFields = (selectedOption['hideFields'] as List<dynamic>).map((e) => e as String).toList();
-                onResult(FormResult(
-                  questionIndex: questionIndex,
-                  id: definition['id'],
-                  value: newValue,
-                  hiddenFields: hiddenFields,
-                ));
+                final selectedOption = definition['options'].firstWhere(
+                  (option) => option['label'] == newValue,
+                );
+                final hiddenFields =
+                    (selectedOption['hideFields'] as List<dynamic>)
+                        .map((e) => e as String)
+                        .toList();
+                onResult(
+                  FormResult(
+                    questionIndex: questionIndex,
+                    id: definition['id'],
+                    value: newValue,
+                    hiddenFields: hiddenFields,
+                  ),
+                );
               }
             },
             decoration: InputDecoration(

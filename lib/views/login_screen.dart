@@ -32,13 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
           IconButton(
             icon: Icon(Icons.code),
             onPressed: () {
-              launchUrl(
-                Uri.parse('https://github.com/SSA-GGMT/zeyn')
-              );
+              launchUrl(Uri.parse('https://github.com/SSA-GGMT/zeyn'));
             },
-          )
-        ]
-        ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(12.0),
@@ -59,13 +57,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (token == null || !context.mounted) return;
                   showLoadingDialog(context);
                   try {
-                    final loginAuthRecord = StudentQrModel.fromLoginToken(token);
+                    final loginAuthRecord = StudentQrModel.fromLoginToken(
+                      token,
+                    );
                     await pb
                         .collection('students')
                         .authWithPassword(
-                      loginAuthRecord.email,
-                      loginAuthRecord.password,
-                    );
+                          loginAuthRecord.email,
+                          loginAuthRecord.password,
+                        );
                   } catch (e, s) {
                     logger.e(e, stackTrace: s);
                   }
@@ -118,14 +118,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          showLoadingDialog(context, message: 'Bitte warten...');
+                          showLoadingDialog(
+                            context,
+                            message: 'Bitte warten...',
+                          );
                           try {
                             await pb
                                 .collection('teachers')
                                 .authWithPassword(
-                              usernameController.text,
-                              passwordController.text,
-                            );
+                                  usernameController.text,
+                                  passwordController.text,
+                                );
                             if (!pb.authStore.isValid) {
                               if (context.mounted) Navigator.of(context).pop();
                               showErrorDialog(
@@ -155,10 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       spacing: 8,
-                      children: [
-                        Icon(Icons.privacy_tip),
-                        Text('Datenschutz'),
-                      ],
+                      children: [Icon(Icons.privacy_tip), Text('Datenschutz')],
                     ),
                     onPressed: () {
                       launchUrl(Uri.parse('https://ssa-ggmt.github.io/zeyn/'));

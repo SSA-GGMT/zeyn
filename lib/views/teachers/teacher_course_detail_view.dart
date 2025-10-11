@@ -150,7 +150,8 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CourseBookHistoryView(course: courseData),
+                  builder:
+                      (context) => CourseBookHistoryView(course: courseData),
                 ),
               );
             },

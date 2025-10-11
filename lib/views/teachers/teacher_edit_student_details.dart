@@ -8,7 +8,11 @@ import '../../utils/dialogs/show_loading_dialog.dart';
 import '../../utils/logger.dart';
 
 class TeacherEditStudentDetailsView extends StatefulWidget {
-  const TeacherEditStudentDetailsView({super.key, required this.courseData, required this.initStudentData});
+  const TeacherEditStudentDetailsView({
+    super.key,
+    required this.courseData,
+    required this.initStudentData,
+  });
   final RecordModel courseData;
   final RecordModel initStudentData;
 
@@ -30,11 +34,16 @@ class _TeacherEditStudentDetailsViewState
   @override
   void initState() {
     super.initState();
-    _firstNameController = TextEditingController(text: widget.initStudentData.data['firstName'] ?? '');
-    _secondNameController = TextEditingController(text: widget.initStudentData.data['secondName'] ?? '');
+    _firstNameController = TextEditingController(
+      text: widget.initStudentData.data['firstName'] ?? '',
+    );
+    _secondNameController = TextEditingController(
+      text: widget.initStudentData.data['secondName'] ?? '',
+    );
     kaderStatus = widget.initStudentData.data['kaderStatus'] ?? 'TSP';
     sex = widget.initStudentData.data['sex'] ?? 'Männlich';
-    birthYear = widget.initStudentData.data['birthYear'] ?? (DateTime.now().year - 14);
+    birthYear =
+        widget.initStudentData.data['birthYear'] ?? (DateTime.now().year - 14);
   }
 
   void applyChanges() async {
@@ -62,7 +71,9 @@ class _TeacherEditStudentDetailsViewState
     };
 
     try {
-      final recordModel = await pb.collection('students').update(widget.initStudentData.id, body: body);
+      final recordModel = await pb
+          .collection('students')
+          .update(widget.initStudentData.id, body: body);
       if (mounted) {
         Navigator.of(context).pop();
         Navigator.of(context).pop(recordModel);
@@ -130,14 +141,16 @@ class _TeacherEditStudentDetailsViewState
                     kaderStatus = value!;
                   });
                 },
-                dropdownMenuEntries: ['TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
-                    .map(
-                      (String value) => DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                      ),
-                    ).toList(),
-              )
+                dropdownMenuEntries:
+                    ['TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
+                        .map(
+                          (String value) => DropdownMenuEntry<String>(
+                            value: value,
+                            label: value,
+                          ),
+                        )
+                        .toList(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -150,14 +163,16 @@ class _TeacherEditStudentDetailsViewState
                     sex = value!;
                   });
                 },
-                dropdownMenuEntries: ['Männlich', 'Weiblich', 'Divers']
-                    .map(
-                      (String value) => DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                      ),
-                    ).toList(),
-              )
+                dropdownMenuEntries:
+                    ['Männlich', 'Weiblich', 'Divers']
+                        .map(
+                          (String value) => DropdownMenuEntry<String>(
+                            value: value,
+                            label: value,
+                          ),
+                        )
+                        .toList(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -170,17 +185,16 @@ class _TeacherEditStudentDetailsViewState
                     birthYear = value!;
                   });
                 },
-                dropdownMenuEntries: List<DropdownMenuEntry<int>>.generate(
-                  50,
-                  (int index) {
-                    final year = DateTime.now().year - index;
-                    return DropdownMenuEntry<int>(
-                      value: year,
-                      label: year.toString(),
-                    );
-                  },
-                ),
-              )
+                dropdownMenuEntries: List<DropdownMenuEntry<int>>.generate(50, (
+                  int index,
+                ) {
+                  final year = DateTime.now().year - index;
+                  return DropdownMenuEntry<int>(
+                    value: year,
+                    label: year.toString(),
+                  );
+                }),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(padding),
@@ -193,7 +207,10 @@ class _TeacherEditStudentDetailsViewState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 8.0,
-                  children: const [Icon(Icons.edit), Text('Schüler bearbeiten')],
+                  children: const [
+                    Icon(Icons.edit),
+                    Text('Schüler bearbeiten'),
+                  ],
                 ),
               ),
             ),

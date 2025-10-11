@@ -119,14 +119,16 @@ class _TeacherAddStudentToCourseViewState
                     kaderStatus = value!;
                   });
                 },
-                dropdownMenuEntries: ['TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
-                    .map(
-                      (String value) => DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                      ),
-                    ).toList(),
-              )
+                dropdownMenuEntries:
+                    ['TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
+                        .map(
+                          (String value) => DropdownMenuEntry<String>(
+                            value: value,
+                            label: value,
+                          ),
+                        )
+                        .toList(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -139,14 +141,16 @@ class _TeacherAddStudentToCourseViewState
                     sex = value!;
                   });
                 },
-                dropdownMenuEntries: ['Männlich', 'Weiblich', 'Divers']
-                    .map(
-                      (String value) => DropdownMenuEntry<String>(
-                        value: value,
-                        label: value,
-                      ),
-                    ).toList(),
-              )
+                dropdownMenuEntries:
+                    ['Männlich', 'Weiblich', 'Divers']
+                        .map(
+                          (String value) => DropdownMenuEntry<String>(
+                            value: value,
+                            label: value,
+                          ),
+                        )
+                        .toList(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -159,17 +163,16 @@ class _TeacherAddStudentToCourseViewState
                     birthYear = value!;
                   });
                 },
-                dropdownMenuEntries: List<DropdownMenuEntry<int>>.generate(
-                  50,
-                  (int index) {
-                    final year = DateTime.now().year - index;
-                    return DropdownMenuEntry<int>(
-                      value: year,
-                      label: year.toString(),
-                    );
-                  },
-                ),
-              )
+                dropdownMenuEntries: List<DropdownMenuEntry<int>>.generate(50, (
+                  int index,
+                ) {
+                  final year = DateTime.now().year - index;
+                  return DropdownMenuEntry<int>(
+                    value: year,
+                    label: year.toString(),
+                  );
+                }),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(padding),

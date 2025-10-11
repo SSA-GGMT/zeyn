@@ -124,14 +124,21 @@ class _StudentHomeViewState extends State<StudentHomeView> {
                           ],
                         ),
                       ),
-                      courseModel != null ? IconButton(
-                        icon: Icon(Icons.history),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => CourseBookHistoryView(course: courseModel!)),
-                          );
-                        },
-                      ) : SizedBox.shrink(),
+                      courseModel != null
+                          ? IconButton(
+                            icon: Icon(Icons.history),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => CourseBookHistoryView(
+                                        course: courseModel!,
+                                      ),
+                                ),
+                              );
+                            },
+                          )
+                          : SizedBox.shrink(),
                     ],
                   ),
                 ),

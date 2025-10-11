@@ -30,7 +30,8 @@ class StudentRangeFormElement extends StatefulWidget {
   final String? value;
 
   @override
-  State<StudentRangeFormElement> createState() => _StudentRangeFormElementState();
+  State<StudentRangeFormElement> createState() =>
+      _StudentRangeFormElementState();
 }
 
 class _StudentRangeFormElementState extends State<StudentRangeFormElement> {
@@ -42,10 +43,21 @@ class _StudentRangeFormElementState extends State<StudentRangeFormElement> {
   @override
   void initState() {
     super.initState();
-    rangeValue = double.tryParse(widget.value ?? widget.definition['initialValue'].toString()) ?? 0.0;
-    minColor = Color(int.parse(widget.definition['min_color'].replaceFirst('#', '0xFF')));
-    maxColor = Color(int.parse(widget.definition['max_color'].replaceFirst('#', '0xFF')));
-    divisions = ((widget.definition['max'] - widget.definition['min']) / widget.definition['step']).round();
+    rangeValue =
+        double.tryParse(
+          widget.value ?? widget.definition['initialValue'].toString(),
+        ) ??
+        0.0;
+    minColor = Color(
+      int.parse(widget.definition['min_color'].replaceFirst('#', '0xFF')),
+    );
+    maxColor = Color(
+      int.parse(widget.definition['max_color'].replaceFirst('#', '0xFF')),
+    );
+    divisions =
+        ((widget.definition['max'] - widget.definition['min']) /
+                widget.definition['step'])
+            .round();
   }
 
   /// Takes two colors and a value between 0 and 1, and returns a color that is
@@ -77,8 +89,16 @@ class _StudentRangeFormElementState extends State<StudentRangeFormElement> {
             min: widget.definition['min'].toDouble(),
             max: widget.definition['max'].toDouble(),
             divisions: divisions,
-            activeColor: gradientColorAt(minColor, maxColor, rangeValue/divisions +0.15),
-            inactiveColor: gradientColorAt(minColor, maxColor, rangeValue/divisions -0.05),
+            activeColor: gradientColorAt(
+              minColor,
+              maxColor,
+              rangeValue / divisions + 0.15,
+            ),
+            inactiveColor: gradientColorAt(
+              minColor,
+              maxColor,
+              rangeValue / divisions - 0.05,
+            ),
             label: "${rangeValue.toInt()}/$divisions",
             onChanged: (double newValue) {
               setState(() {
@@ -86,12 +106,14 @@ class _StudentRangeFormElementState extends State<StudentRangeFormElement> {
               });
             },
             onChangeEnd: (double newValue) {
-              widget.onResult(FormResult(
-                questionIndex: widget.questionIndex,
-                id: widget.definition['id'],
-                value: newValue.toString(),
-                hiddenFields: [],
-              ));
+              widget.onResult(
+                FormResult(
+                  questionIndex: widget.questionIndex,
+                  id: widget.definition['id'],
+                  value: newValue.toString(),
+                  hiddenFields: [],
+                ),
+              );
             },
           ),
         ],

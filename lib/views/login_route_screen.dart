@@ -16,7 +16,6 @@ class LoginRouteScreen extends StatefulWidget {
 }
 
 class _LoginRouteScreenState extends State<LoginRouteScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -27,7 +26,11 @@ class _LoginRouteScreenState extends State<LoginRouteScreen> {
 
   void handleLogin() async {
     if (pb.authStore.isValid) {
-      final result = await showConfirmDialog(context, message: "Möchtest du dich wirklich abmelden? Du bist bereits angemeldet.");
+      final result = await showConfirmDialog(
+        context,
+        message:
+            "Möchtest du dich wirklich abmelden? Du bist bereits angemeldet.",
+      );
       if (result == false && mounted) {
         context.go('/');
         return;
@@ -40,13 +43,12 @@ class _LoginRouteScreenState extends State<LoginRouteScreen> {
         return;
       }
       showLoadingDialog(context, message: "Automatische Anmeldung...");
-      final loginAuthRecord = StudentQrModel.fromLoginToken(widget.queryParams["token"]!);
+      final loginAuthRecord = StudentQrModel.fromLoginToken(
+        widget.queryParams["token"]!,
+      );
       await pb
           .collection('students')
-          .authWithPassword(
-        loginAuthRecord.email,
-        loginAuthRecord.password,
-      );
+          .authWithPassword(loginAuthRecord.email, loginAuthRecord.password);
       if (!mounted) return;
       Navigator.of(context).pop();
       if (!mounted) return;
@@ -56,7 +58,11 @@ class _LoginRouteScreenState extends State<LoginRouteScreen> {
       if (!mounted) return;
       Navigator.of(context).pop();
       if (!mounted) return;
-      await showErrorDialog(context, message: "Automatische Anmeldung fehlgeschlagen. Bitte versuche es erneut.");
+      await showErrorDialog(
+        context,
+        message:
+            "Automatische Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      );
       if (!mounted) return;
       context.go('/');
     }
@@ -65,12 +71,8 @@ class _LoginRouteScreenState extends State<LoginRouteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Automatische Anmeldung'),
-      ),
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
+      appBar: AppBar(title: const Text('Automatische Anmeldung')),
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }

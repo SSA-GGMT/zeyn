@@ -10,28 +10,36 @@ import 'package:zeyn/views/teachers/teacher_home_view.dart';
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/', builder: (context, state) => Scaffold(
-        body: StreamBuilder(
-          stream: pb.authStore.onChange,
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<AuthStoreEvent> snapshot,
-          ) {
-            final accountType = pb.authStore.record?.collectionName;
-            if (accountType == 'teachers') {
-              return TeacherHomeView();
-            } else if (accountType == 'students') {
-              return StudentHomeView();
-            } else if (accountType == 'schools') {
-              return AdminHomeView();
-            }
+    GoRoute(
+      path: '/',
+      builder:
+          (context, state) => Scaffold(
+            body: StreamBuilder(
+              stream: pb.authStore.onChange,
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<AuthStoreEvent> snapshot,
+              ) {
+                final accountType = pb.authStore.record?.collectionName;
+                if (accountType == 'teachers') {
+                  return TeacherHomeView();
+                } else if (accountType == 'students') {
+                  return StudentHomeView();
+                } else if (accountType == 'schools') {
+                  return AdminHomeView();
+                }
 
-            return LoginScreen();
-          },
-        ),
-      ),
+                return LoginScreen();
+              },
+            ),
+          ),
     ),
-    GoRoute(path: ('/login'), builder: (context, state) => LoginRouteScreen(queryParams: state.uri.queryParameters)),
+    GoRoute(
+      path: ('/login'),
+      builder:
+          (context, state) =>
+              LoginRouteScreen(queryParams: state.uri.queryParameters),
+    ),
   ],
 );
 

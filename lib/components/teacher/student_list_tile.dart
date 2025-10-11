@@ -56,10 +56,11 @@ class _StudentListTileState extends State<StudentListTile> {
         onTap: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => TeacherEditStudentDetailsView(
-                courseData: widget.courseData,
-                initStudentData: widget.initStudentData,
-              ),
+              builder:
+                  (context) => TeacherEditStudentDetailsView(
+                    courseData: widget.courseData,
+                    initStudentData: widget.initStudentData,
+                  ),
             ),
           );
           widget.refreshCallback();
@@ -221,7 +222,10 @@ class _StudentListTileState extends State<StudentListTile> {
                   ),
                 ],
               ),
-      leading: Icon(Icons.school, color: colorBySex(widget.initStudentData.data['sex']),),
+      leading: Icon(
+        Icons.school,
+        color: colorBySex(widget.initStudentData.data['sex']),
+      ),
       trailing: PopupMenuButton<StudentListTileAction>(
         onSelected: (StudentListTileAction choice) {
           choice.onTap();

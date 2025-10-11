@@ -9,16 +9,20 @@ import 'package:zeyn/utils/logger.dart';
 class CourseBookHistoryListTile extends StatelessWidget {
   final RecordModel historyRecord;
   final Function onDelete;
-  const CourseBookHistoryListTile({super.key, required this.historyRecord, required this.onDelete});
+  const CourseBookHistoryListTile({
+    super.key,
+    required this.historyRecord,
+    required this.onDelete,
+  });
 
   void deleteHistoryRecord(BuildContext context) async {
-    if (await showConfirmDialog(context,
-        message: 'Möchten Sie diesen Eintrag wirklich löschen?')) {
+    if (await showConfirmDialog(
+      context,
+      message: 'Möchten Sie diesen Eintrag wirklich löschen?',
+    )) {
       try {
         await pb.collection('courseHistoryRecords').delete(historyRecord.id);
-        if (onDelete != null) {
-          onDelete!();
-        }
+        onDelete();
       } catch (e, stack) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

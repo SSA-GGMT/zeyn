@@ -32,7 +32,9 @@ class _CreateBookHistoryEventViewState
     };
 
     try {
-      final recordModel = await pb.collection('courseHistoryRecords').create(body: body);
+      final recordModel = await pb
+          .collection('courseHistoryRecords')
+          .create(body: body);
       if (mounted) {
         Navigator.of(context).pop();
         Navigator.of(context).pop(recordModel);

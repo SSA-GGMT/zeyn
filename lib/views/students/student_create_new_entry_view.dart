@@ -12,7 +12,6 @@ import '../../utils/dialogs/show_error_dialog.dart';
 import '../../utils/dialogs/show_loading_dialog.dart';
 import '../../utils/logger.dart';
 
-
 typedef FormDataCallback = Future<void> Function(Map<String, String> result);
 
 class StudentCreateNewEntryView extends StatefulWidget {
@@ -20,7 +19,8 @@ class StudentCreateNewEntryView extends StatefulWidget {
   final List<dynamic> form;
 
   @override
-  State<StudentCreateNewEntryView> createState() => _StudentCreateNewEntryViewState();
+  State<StudentCreateNewEntryView> createState() =>
+      _StudentCreateNewEntryViewState();
 }
 
 class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
@@ -37,11 +37,25 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
     String? value,
   }) {
     if (type == "select") {
-      return StudentSelectFormElement(questionIndex: questionIndex, definition: definition, onResult: onResult, value: value,);
+      return StudentSelectFormElement(
+        questionIndex: questionIndex,
+        definition: definition,
+        onResult: onResult,
+        value: value,
+      );
     } else if (type == "radio") {
-      return StudentRadioFormElement(questionIndex: questionIndex, definition: definition, onResult: onResult, value: value,);
+      return StudentRadioFormElement(
+        questionIndex: questionIndex,
+        definition: definition,
+        onResult: onResult,
+        value: value,
+      );
     } else if (type == "range") {
-      return StudentRangeFormElement(questionIndex: questionIndex, definition: definition, onResult: onResult);
+      return StudentRangeFormElement(
+        questionIndex: questionIndex,
+        definition: definition,
+        onResult: onResult,
+      );
     }
     return Placeholder();
   }
@@ -58,7 +72,7 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
 
       // Check if the question is already answered
       final existingResult = results.firstWhere(
-            (e) => e.id == formElement['id'],
+        (e) => e.id == formElement['id'],
         orElse: () => FormResult.empty(),
       );
 
@@ -113,15 +127,16 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
       "created_at": createdAt.toUtc().toIso8601String(),
     };
 
-
     try {
-      final recordModel = await pb.collection('studentRecords').create(body: body);
+      final recordModel = await pb
+          .collection('studentRecords')
+          .create(body: body);
       if (mounted) {
         Navigator.of(context).pop();
         Navigator.of(context).pop(recordModel);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Eintrag erstellt!')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Eintrag erstellt!')));
       }
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -135,30 +150,29 @@ class _StudentCreateNewEntryViewState extends State<StudentCreateNewEntryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Neuer Eintrag"),
-      ),
-        body: ListView(
-          children: [
-            CreatedAtPicker(
-              initialDateTime: createdAt,
-              onChanged: (newDateTime) {
-                setState(() {
-                  createdAt = newDateTime;
-                });
-              },
-            ),
-            Divider(),
-            ...getFormWidgets(),
-            if (isFormComplete) Padding(
+      appBar: AppBar(title: Text("Neuer Eintrag")),
+      body: ListView(
+        children: [
+          CreatedAtPicker(
+            initialDateTime: createdAt,
+            onChanged: (newDateTime) {
+              setState(() {
+                createdAt = newDateTime;
+              });
+            },
+          ),
+          Divider(),
+          ...getFormWidgets(),
+          if (isFormComplete)
+            Padding(
               padding: EdgeInsets.all(4.0),
               child: ElevatedButton(
                 onPressed: postEntry,
                 child: Text("Eintrag speichern"),
               ),
-            )
-          ],
-        )
+            ),
+        ],
+      ),
     );
   }
 }
