@@ -41,6 +41,23 @@ class CourseBookHistoryListTile extends StatelessWidget {
       children: [
         const Divider(height: 1),
         ListTile(
+          leading: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 2,
+                children: [
+                  Icon(Icons.people, size: 14,),
+                  Text(historyRecord.get('student_count').toString(), style: TextStyle(fontSize: 16),),
+                ],
+              ),
+            ),
+          ),
           title: Row(
             children: [
               Expanded(
@@ -55,17 +72,15 @@ class CourseBookHistoryListTile extends StatelessWidget {
               ),
             ],
           ),
-          subtitle:
-              historyRecord.get('notes').isNotEmpty
-                  ? Text(historyRecord.get('notes'))
-                  : null,
-          trailing:
-              pb.authStore.record?.collectionName == 'teachers'
-                  ? IconButton.filledTonal(
-                    onPressed: () => deleteHistoryRecord(context),
-                    icon: Icon(Icons.delete),
-                  )
-                  : null,
+          subtitle: historyRecord.get('notes').isNotEmpty
+              ? Text(historyRecord.get('notes'))
+              : null,
+          trailing: pb.authStore.record?.collectionName == 'teachers'
+              ? IconButton.filledTonal(
+                  onPressed: () => deleteHistoryRecord(context),
+                  icon: Icon(Icons.delete),
+                )
+              : null,
         ),
       ],
     );

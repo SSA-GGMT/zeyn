@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:zeyn/api/pocketbase.dart';
-import 'package:zeyn/views/shared/course_book_history_list_tile.dart';
+import 'package:zeyn/components/shared/course_book_history_list_tile.dart';
 import 'package:zeyn/views/shared/create_book_history_event_view.dart';
 
 import '../../utils/logger.dart';
