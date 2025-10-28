@@ -27,7 +27,7 @@ class _TeacherEditStudentDetailsViewState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController _firstNameController;
   late final TextEditingController _secondNameController;
-  late String kaderStatus = 'TSP';
+  late String kaderStatus = 'Kein Kader';
   late String sex = 'Männlich';
   late int birthYear = DateTime.now().year - 14;
 
@@ -40,7 +40,7 @@ class _TeacherEditStudentDetailsViewState
     _secondNameController = TextEditingController(
       text: widget.initStudentData.data['secondName'] ?? '',
     );
-    kaderStatus = widget.initStudentData.data['kaderStatus'] ?? 'TSP';
+    kaderStatus = widget.initStudentData.data['kaderStatus'] ?? 'Kein Kader';
     sex = widget.initStudentData.data['sex'] ?? 'Männlich';
     birthYear =
         widget.initStudentData.data['birthYear'] ?? (DateTime.now().year - 14);
@@ -135,14 +135,14 @@ class _TeacherEditStudentDetailsViewState
               child: DropdownMenu<String>(
                 label: Text('Kaderstatus'),
                 width: double.infinity,
-                initialSelection: 'TSP',
+                initialSelection: 'Kein Kader',
                 onSelected: (String? value) {
                   setState(() {
                     kaderStatus = value!;
                   });
                 },
                 dropdownMenuEntries:
-                    ['TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
+                    ['Kein Kader', 'TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
                         .map(
                           (String value) => DropdownMenuEntry<String>(
                             value: value,

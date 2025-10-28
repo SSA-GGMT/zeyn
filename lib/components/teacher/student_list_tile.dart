@@ -157,11 +157,15 @@ class _StudentListTileState extends State<StudentListTile> {
     }
   }
 
+  bool get hasKaderStatus {
+    return widget.initStudentData.data['kaderStatus'] != 'Kein Kader';
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${widget.initStudentData.data['kaderStatus']}, ${widget.initStudentData.data['birthYear']})",
+        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${hasKaderStatus ? widget.initStudentData.data['kaderStatus']+", ": ""}${widget.initStudentData.data['birthYear']})",
       ),
       subtitle:
           loadingRecords

@@ -22,7 +22,7 @@ class _TeacherAddStudentToCourseViewState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _secondNameController = TextEditingController();
-  String kaderStatus = 'TSP';
+  String kaderStatus = 'Kein Kader';
   String sex = 'Männlich';
   int birthYear = DateTime.now().year - 14;
 
@@ -113,14 +113,14 @@ class _TeacherAddStudentToCourseViewState
               child: DropdownMenu<String>(
                 label: Text('Kaderstatus'),
                 width: double.infinity,
-                initialSelection: 'TSP',
+                initialSelection: 'Kein Kader',
                 onSelected: (String? value) {
                   setState(() {
                     kaderStatus = value!;
                   });
                 },
                 dropdownMenuEntries:
-                    ['TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
+                    ['Kein Kader', 'TSP', 'NK1', 'NK2', 'LK', 'PK', 'OK']
                         .map(
                           (String value) => DropdownMenuEntry<String>(
                             value: value,
