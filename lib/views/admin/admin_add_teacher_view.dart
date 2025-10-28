@@ -30,7 +30,7 @@ class _AdminAddTeacherViewState extends State<AdminAddTeacherView> {
     final body = <String, dynamic>{
       "password": _passwordController.text,
       "passwordConfirm": _passwordController2.text,
-      "email": _emailController.text,
+      "email": _emailController.text.toLowerCase(),
       "emailVisibility": true,
       "school": pb.authStore.record!.id,
       "krz": _krzController.text.toUpperCase(),

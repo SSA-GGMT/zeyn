@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     await pb
                         .collection('students')
                         .authWithPassword(
-                          loginAuthRecord.email,
+                          loginAuthRecord.email.toLowerCase(),
                           loginAuthRecord.password,
                         );
                   } catch (e, s) {
