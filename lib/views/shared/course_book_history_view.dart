@@ -74,59 +74,53 @@ class _CourseBookHistoryViewState extends State<CourseBookHistoryView> {
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: fetchHistory,
-        child:
-            history.isEmpty
-                ? SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: SizedBox(
-                    height:
-                        MediaQuery.of(context).size.height -
-                        kToolbarHeight -
-                        24,
-                    child: const Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        spacing: 8,
-                        children: [
-                          Icon(Icons.history, size: 64, color: Colors.grey),
-                          Text(
-                            'Keine Historie vorhanden',
-                            style: TextStyle(fontSize: 18, color: Colors.grey),
-                          ),
-                        ],
-                      ),
+        child: history.isEmpty
+            ? SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: SizedBox(
+                  height:
+                      MediaQuery.of(context).size.height - kToolbarHeight - 24,
+                  child: const Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 8,
+                      children: [
+                        Icon(Icons.history, size: 64, color: Colors.grey),
+                        Text(
+                          'Keine Historie vorhanden',
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      ],
                     ),
                   ),
-                )
-                : ListView.builder(
-                  itemCount: history.length,
-                  itemBuilder: (context, index) {
-                    final record = history[index];
-                    return CourseBookHistoryListTile(
-                      historyRecord: record,
-                      onDelete: () => fetchHistory(),
-                    );
-                  },
                 ),
-      ),
-      floatingActionButton:
-          pb.authStore.record!.collectionName == 'teachers'
-              ? FloatingActionButton.extended(
-                onPressed: () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder:
-                          (context) => CreateBookHistoryEventView(
-                            courseId: widget.course.id,
-                          ),
-                    ),
-                  );
-                  await fetchHistory();
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Eintrag erstellen'),
               )
-              : null,
+            : ListView.builder(
+                itemCount: history.length,
+                itemBuilder: (context, index) {
+                  final record = history[index];
+                  return CourseBookHistoryListTile(
+                    historyRecord: record,
+                    onDelete: () => fetchHistory(),
+                  );
+                },
+              ),
+      ),
+      floatingActionButton: pb.authStore.record!.collectionName == 'teachers'
+          ? FloatingActionButton.extended(
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CreateBookHistoryEventView(courseId: widget.course.id),
+                  ),
+                );
+                await fetchHistory();
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Eintrag erstellen'),
+            )
+          : null,
     );
   }
 }

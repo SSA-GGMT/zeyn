@@ -25,35 +25,36 @@ class StudentRadioFormElement extends StatelessWidget {
         children: [
           Text(definition['label']),
           Column(
-            children:
-                (definition['options'] as List<dynamic>).map<Widget>((option) {
-                  return RadioListTile<String>(
-                    value: option['label'],
-                    groupValue: value,
-                    title: Text(
-                      "${option['label']}${option['hint'] != null ? " (${option['hint']})" : ""}",
-                    ),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        final selectedOption = definition['options'].firstWhere(
-                          (opt) => opt['label'] == newValue,
-                        );
-                        final hiddenFields =
-                            (selectedOption['hideFields'] as List<dynamic>)
-                                .map((e) => e as String)
-                                .toList();
-                        onResult(
-                          FormResult(
-                            questionIndex: questionIndex,
-                            id: definition['id'],
-                            value: newValue,
-                            hiddenFields: hiddenFields,
-                          ),
-                        );
-                      }
-                    },
-                  );
-                }).toList(),
+            children: (definition['options'] as List<dynamic>).map<Widget>((
+              option,
+            ) {
+              return RadioListTile<String>(
+                value: option['label'],
+                groupValue: value,
+                title: Text(
+                  "${option['label']}${option['hint'] != null ? " (${option['hint']})" : ""}",
+                ),
+                onChanged: (String? newValue) {
+                  if (newValue != null) {
+                    final selectedOption = definition['options'].firstWhere(
+                      (opt) => opt['label'] == newValue,
+                    );
+                    final hiddenFields =
+                        (selectedOption['hideFields'] as List<dynamic>)
+                            .map((e) => e as String)
+                            .toList();
+                    onResult(
+                      FormResult(
+                        questionIndex: questionIndex,
+                        id: definition['id'],
+                        value: newValue,
+                        hiddenFields: hiddenFields,
+                      ),
+                    );
+                  }
+                },
+              );
+            }).toList(),
           ),
         ],
       ),

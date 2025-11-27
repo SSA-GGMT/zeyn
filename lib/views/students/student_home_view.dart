@@ -38,7 +38,7 @@ class _StudentHomeViewState extends State<StudentHomeView> {
   Future<void> getHistoryEntries() async {
     final resultList = await pb
         .collection('studentRecords')
-        .getList(page: 1, perPage: 34, sort: "created");
+        .getList(page: 1, perPage: 64, sort: "-created");
 
     setState(() {
       historyEntries = resultList.items;
@@ -80,89 +80,90 @@ class _StudentHomeViewState extends State<StudentHomeView> {
         ],
         backgroundColor: Theme.of(context).colorScheme.tertiary,
       ),
-      body: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: getHistoryEntries,
-        child: CustomScrollView(
-          slivers: [
-            SliverFloatingHeader(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    width: 2.0,
+      body: SafeArea(
+        child: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          onRefresh: getHistoryEntries,
+          child: CustomScrollView(
+            slivers: [
+              SliverFloatingHeader(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      width: 2.0,
+                    ),
+                    borderRadius: BorderRadiusDirectional.vertical(
+                      bottom: Radius.circular(16.0),
+                    ),
                   ),
-                  borderRadius: BorderRadiusDirectional.vertical(
-                    bottom: Radius.circular(16.0),
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
-                    spacing: 8.0,
-                    children: [
-                      Icon(Icons.school, size: 40),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "${courseModel?.data['courseTitle']} (${courseModel?.data['expand']['sport']['name']})",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              courseModel?.data['expand']['school']['name'] ??
-                                  '',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontSize: 15,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(
+                      spacing: 8.0,
+                      children: [
+                        Icon(Icons.school, size: 40),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "${courseModel?.data['courseTitle']} (${courseModel?.data['expand']['sport']['name']})",
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
-                            ),
-                          ],
+                              Text(
+                                courseModel?.data['expand']['school']['name'] ??
+                                    '',
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      courseModel != null
-                          ? IconButton(
-                            icon: Icon(Icons.history),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => CourseBookHistoryView(
+                        courseModel != null
+                            ? IconButton(
+                                icon: Icon(Icons.history),
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => CourseBookHistoryView(
                                         course: courseModel!,
                                       ),
-                                ),
-                              );
-                            },
-                          )
-                          : SizedBox.shrink(),
-                    ],
+                                    ),
+                                  );
+                                },
+                              )
+                            : SizedBox.shrink(),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            if (historyEntries?.isEmpty ?? true)
-              SliverFillRemaining(
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.face, size: 48),
-                      Text("Keine Einträge!"),
-                    ],
+              if (historyEntries?.isEmpty ?? true)
+                SliverFillRemaining(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.face, size: 48),
+                        Text("Keine Einträge!"),
+                      ],
+                    ),
                   ),
-                ),
-              )
-            else
-              SliverList.builder(
-                itemCount: historyEntries!.length,
-                itemBuilder:
-                    (context, index) => StudentHistoryListTile(
-                      historyEntry:
-                          historyEntries![historyEntries!.length - index - 1],
+                )
+              else
+                SliverList.builder(
+                  itemCount: historyEntries!.length,
+                  itemBuilder: (context, index) {
+                    final entry = historyEntries![index];
+        
+                    return StudentHistoryListTile(
+                      historyEntry: entry,
                       questionsDefinition: courseModel?.data['questions'],
                       onDelete: () async {
                         final delete = await showConfirmDialog(context);
@@ -170,12 +171,7 @@ class _StudentHomeViewState extends State<StudentHomeView> {
                         showLoadingDialog(context);
                         pb
                             .collection('studentRecords')
-                            .delete(
-                              historyEntries![historyEntries!.length -
-                                      index -
-                                      1]
-                                  .id,
-                            )
+                            .delete(entry.id)
                             .then((_) {
                               if (context.mounted) Navigator.of(context).pop();
                               getHistoryEntries();
@@ -188,19 +184,20 @@ class _StudentHomeViewState extends State<StudentHomeView> {
                               }
                             });
                       },
-                    ),
-              ),
-          ],
+                    );
+                  },
+                ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
-              builder:
-                  (context) => StudentCreateNewEntryView(
-                    form: courseModel?.data['questions'],
-                  ),
+              builder: (context) => StudentCreateNewEntryView(
+                form: courseModel?.data['questions'],
+              ),
             ),
           );
           await _refreshIndicatorKey.currentState?.show();

@@ -51,43 +51,38 @@ class _AsyncTeacherChipState extends State<AsyncTeacherChip> {
       onTap: () {
         showDialog(
           context: context,
-          builder:
-              (context) => SimpleDialog(
-                title: Row(
-                  children: [
-                    Icon(Icons.person),
-                    Text(
-                      "${teacherRecord?.data['firstName']} ${teacherRecord?.data['secondName']} (${teacherRecord?.data['krz']})",
-                    ),
-                  ],
+          builder: (context) => SimpleDialog(
+            title: Row(
+              children: [
+                Icon(Icons.person),
+                Text(
+                  "${teacherRecord?.data['firstName']} ${teacherRecord?.data['secondName']} (${teacherRecord?.data['krz']})",
                 ),
+              ],
+            ),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 8.0,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 8.0,
-                    children: [
-                      Icon(Icons.email),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: Size.zero,
-                        ),
-                        onPressed:
-                            () =>
-                                teacherRecord?.data['email'] != null
-                                    ? launchUrl(
-                                      Uri.parse(
-                                        'mailto:${teacherRecord!.data['email']}',
-                                      ),
-                                    )
-                                    : null,
-                        child: Text(teacherRecord?.data['email'] ?? ''),
-                      ),
-                    ],
+                  Icon(Icons.email),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                    ),
+                    onPressed: () => teacherRecord?.data['email'] != null
+                        ? launchUrl(
+                            Uri.parse('mailto:${teacherRecord!.data['email']}'),
+                          )
+                        : null,
+                    child: Text(teacherRecord?.data['email'] ?? ''),
                   ),
-                  if (widget.actions != null) ...widget.actions!,
                 ],
               ),
+              if (widget.actions != null) ...widget.actions!,
+            ],
+          ),
         );
       },
     );
@@ -123,35 +118,33 @@ class SyncTeacherChip extends StatelessWidget {
       onTap: () {
         showDialog(
           context: context,
-          builder:
-              (context) => SimpleDialog(
-                title: Row(
-                  children: [
-                    Icon(Icons.person),
-                    Text("$firstName $secondName ($krz)"),
-                  ],
-                ),
+          builder: (context) => SimpleDialog(
+            title: Row(
+              children: [
+                Icon(Icons.person),
+                Text("$firstName $secondName ($krz)"),
+              ],
+            ),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.email),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: Size.zero,
-                        ),
-                        onPressed:
-                            email.isNotEmpty
-                                ? () => launchUrl(Uri.parse('mailto:$email'))
-                                : null,
-                        child: Text(email),
-                      ),
-                    ],
+                  Icon(Icons.email),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                    ),
+                    onPressed: email.isNotEmpty
+                        ? () => launchUrl(Uri.parse('mailto:$email'))
+                        : null,
+                    child: Text(email),
                   ),
-                  if (actions != null) ...actions!,
                 ],
               ),
+              if (actions != null) ...actions!,
+            ],
+          ),
         );
       },
     );

@@ -51,17 +51,16 @@ class StudentSelectFormElement extends StatelessWidget {
           Text(definition['label']),
           DropdownButtonFormField<String>(
             value: value,
-            items:
-                (definition['options'] as List<dynamic>).map<
-                  DropdownMenuItem<String>
-                >((option) {
+            items: (definition['options'] as List<dynamic>)
+                .map<DropdownMenuItem<String>>((option) {
                   return DropdownMenuItem<String>(
                     value: option['label'],
                     child: Text(
                       "${option['label']}${option['hint'] != null ? " (${option['hint']})" : ""}",
                     ),
                   );
-                }).toList(),
+                })
+                .toList(),
             onChanged: (String? newValue) {
               if (newValue != null) {
                 final selectedOption = definition['options'].firstWhere(

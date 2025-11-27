@@ -163,15 +163,12 @@ class _TeacherEditStudentDetailsViewState
                     sex = value!;
                   });
                 },
-                dropdownMenuEntries:
-                    ['Männlich', 'Weiblich', 'Divers']
-                        .map(
-                          (String value) => DropdownMenuEntry<String>(
-                            value: value,
-                            label: value,
-                          ),
-                        )
-                        .toList(),
+                dropdownMenuEntries: ['Männlich', 'Weiblich', 'Divers']
+                    .map(
+                      (String value) =>
+                          DropdownMenuEntry<String>(value: value, label: value),
+                    )
+                    .toList(),
               ),
             ),
             Padding(

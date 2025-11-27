@@ -124,7 +124,7 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
             // not older than 7 days
             filter:
                 'student = "${widget.initStudentData.id}" && created > "${DateTime.now().subtract(selectedRangeDuration).toIso8601String()}"',
-            sort: "created",
+            sort: "-created",
           );
     } catch (e) {
       errorLoadingRecords = true;
@@ -139,8 +139,7 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
     return ListView.builder(
       itemCount: _studentRecords.length,
       itemBuilder: (context, index) {
-        int reverseIndex = _studentRecords.length - 1 - index;
-        final record = _studentRecords[reverseIndex];
+        final record = _studentRecords[index];
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,21 +192,20 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
     dynamic definition,
   ) {
     return LineChartBarData(
-      spots:
-          _studentRecords
-              .where((e) => e.data['questionAnswer'].containsKey(evalField))
-              .map((record) {
-                final dataPoint = double.parse(
-                  record.data['questionAnswer'][evalField].toString(),
-                );
-                final DateTime created = DateTime.parse(record.data['created']);
-                return FlSpot(
-                  selectedRangeDuration.inDays.toDouble() -
-                      DateTime.now().difference(created).inDays.toDouble(),
-                  dataPoint,
-                );
-              })
-              .toList(),
+      spots: _studentRecords
+          .where((e) => e.data['questionAnswer'].containsKey(evalField))
+          .map((record) {
+            final dataPoint = double.parse(
+              record.data['questionAnswer'][evalField].toString(),
+            );
+            final DateTime created = DateTime.parse(record.data['created']);
+            return FlSpot(
+              selectedRangeDuration.inDays.toDouble() -
+                  DateTime.now().difference(created).inDays.toDouble(),
+              dataPoint,
+            );
+          })
+          .toList(),
       isCurved: true,
       barWidth: 2.0,
       dotData: FlDotData(
@@ -368,27 +366,31 @@ class _TeacherStudentDetailViewState extends State<TeacherStudentDetailView>
         actions: [timeSelectorButton()],
       ),
       body: Center(
-        child:
-            _isLoading
-                ? CircularProgressIndicator()
-                : errorLoadingRecords
-                ? Text("Error loading student records")
-                : DefaultTabController(
-                  length: 2,
-                  child: Column(
-                    children: [
-                      TabBar(tabs: [Tab(text: 'Grafik'), Tab(text: 'Verlauf')]),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            _buildStudentChartList(),
-                            _buildStudentHistoryList(),
-                          ],
-                        ),
+        child: _isLoading
+            ? CircularProgressIndicator()
+            : errorLoadingRecords
+            ? Text("Error loading student records")
+            : DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    TabBar(
+                      tabs: [
+                        Tab(text: 'Grafik'),
+                        Tab(text: 'Verlauf'),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          _buildStudentChartList(),
+                          _buildStudentHistoryList(),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
       ),
     );
   }

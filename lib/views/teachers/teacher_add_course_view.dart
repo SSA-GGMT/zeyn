@@ -85,15 +85,14 @@ class _TeacherAddCourseViewState extends State<TeacherAddCourseView> {
             Padding(
               padding: const EdgeInsets.all(padding),
               child: ElevatedButton(
-                onPressed:
-                    selectedSport != null
-                        ? () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            // Handle form submission
-                            addCourse();
-                          }
+                onPressed: selectedSport != null
+                    ? () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          // Handle form submission
+                          addCourse();
                         }
-                        : null,
+                      }
+                    : null,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 8.0,

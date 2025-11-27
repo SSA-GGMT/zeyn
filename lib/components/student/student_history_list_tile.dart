@@ -21,20 +21,17 @@ class StudentHistoryListTile extends StatelessWidget {
     final difference = now.difference(dateTime);
     String result = "";
     if (difference.inDays > 0) {
-      result =
-          difference.inDays == 1
-              ? "Vor 1 Tag"
-              : "Vor ${difference.inDays} Tagen";
+      result = difference.inDays == 1
+          ? "Vor 1 Tag"
+          : "Vor ${difference.inDays} Tagen";
     } else if (difference.inHours > 0) {
-      result =
-          difference.inHours == 1
-              ? "Vor 1 Stunde"
-              : "Vor ${difference.inHours} Stunden";
+      result = difference.inHours == 1
+          ? "Vor 1 Stunde"
+          : "Vor ${difference.inHours} Stunden";
     } else if (difference.inMinutes > 0) {
-      result =
-          difference.inMinutes == 1
-              ? "Vor 1 Minute"
-              : "Vor ${difference.inMinutes} Minuten";
+      result = difference.inMinutes == 1
+          ? "Vor 1 Minute"
+          : "Vor ${difference.inMinutes} Minuten";
     } else {
       result = "Jetzt";
     }
@@ -72,10 +69,9 @@ class StudentHistoryListTile extends StatelessWidget {
                   ),
             ],
           ),
-          trailing:
-              hideDelete
-                  ? null
-                  : IconButton(onPressed: onDelete, icon: Icon(Icons.delete)),
+          trailing: hideDelete
+              ? null
+              : IconButton(onPressed: onDelete, icon: Icon(Icons.delete)),
         ),
         const Divider(height: 1, thickness: 1, color: Colors.black12),
       ],

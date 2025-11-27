@@ -43,8 +43,9 @@ class ConditionGenerator {
 
         for (var record in studentRecords) {
           final DateTime createdDate = DateTime.parse(record['created']);
-          final hoursDifference =
-              DateTime.now().difference(createdDate).inHours;
+          final hoursDifference = DateTime.now()
+              .difference(createdDate)
+              .inHours;
           if (hoursDifference <= 24 && record.keys.contains(evalField)) {
             lastDayRecords.add(record);
           }

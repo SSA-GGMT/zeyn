@@ -51,39 +51,39 @@ class _SportsSelectorState extends State<SportsSelector> {
     return sports == null
         ? LinearProgressIndicator()
         : DropdownMenu<RecordModel>(
-          width: double.infinity,
-          dropdownMenuEntries:
-              sports
-                  ?.map(
-                    (e) => DropdownMenuEntry(
-                      label: e.data['name'],
-                      labelWidget: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(e.data['name']),
-                          if (e.data['description'] != null)
-                            Text(
-                              e.data['description'],
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
+            width: double.infinity,
+            dropdownMenuEntries:
+                sports
+                    ?.map(
+                      (e) => DropdownMenuEntry(
+                        label: e.data['name'],
+                        labelWidget: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(e.data['name']),
+                            if (e.data['description'] != null)
+                              Text(
+                                e.data['description'],
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
+                        value: e,
                       ),
-                      value: e,
-                    ),
-                  )
-                  .toList() ??
-              [],
-          onSelected: (value) {
-            if (value != null) {
-              widget.onSelected(value);
-            }
-          },
-          label: const Text('Sportart auswählen'),
-          initialSelection: sports?.first,
-        );
+                    )
+                    .toList() ??
+                [],
+            onSelected: (value) {
+              if (value != null) {
+                widget.onSelected(value);
+              }
+            },
+            label: const Text('Sportart auswählen'),
+            initialSelection: sports?.first,
+          );
   }
 }

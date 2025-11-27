@@ -185,10 +185,9 @@ class _AdminEditTeacherViewState extends State<AdminEditTeacherView> {
             SwitchListTile(
               value: editPassword,
               title: Text('Passwort ändern'),
-              onChanged:
-                  (newVal) => setState(() {
-                    editPassword = newVal;
-                  }),
+              onChanged: (newVal) => setState(() {
+                editPassword = newVal;
+              }),
             ),
             if (editPassword) ...[
               Padding(
@@ -199,10 +198,9 @@ class _AdminEditTeacherViewState extends State<AdminEditTeacherView> {
                     labelText: 'Passwort',
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      onPressed:
-                          () => setState(() {
-                            showPassword = !showPassword;
-                          }),
+                      onPressed: () => setState(() {
+                        showPassword = !showPassword;
+                      }),
                       icon: Icon(
                         !showPassword ? Icons.visibility : Icons.visibility_off,
                       ),
@@ -234,10 +232,9 @@ class _AdminEditTeacherViewState extends State<AdminEditTeacherView> {
                     labelText: 'Passwort wiederholen',
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      onPressed:
-                          () => setState(() {
-                            showPassword2 = !showPassword2;
-                          }),
+                      onPressed: () => setState(() {
+                        showPassword2 = !showPassword2;
+                      }),
                       icon: Icon(
                         !showPassword2
                             ? Icons.visibility

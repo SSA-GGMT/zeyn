@@ -92,8 +92,9 @@ class _AdminHomeViewState extends State<AdminHomeView> {
               onRefresh: () async {
                 data =
                     (await pb
-                        .collection('teachers')
-                        .getList(sort: 'krz,secondName')).items;
+                            .collection('teachers')
+                            .getList(sort: 'krz,secondName'))
+                        .items;
                 setState(() {
                   data = data;
                 });

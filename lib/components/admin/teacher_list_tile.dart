@@ -32,8 +32,8 @@ class TeacherListTile extends StatelessWidget {
       onTap: () async {
         await Navigator.of(context).push(
           MaterialPageRoute(
-            builder:
-                (context) => AdminEditTeacherView(initialData: teacherData),
+            builder: (context) =>
+                AdminEditTeacherView(initialData: teacherData),
           ),
         );
         afterTap();

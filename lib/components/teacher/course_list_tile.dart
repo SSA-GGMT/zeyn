@@ -34,36 +34,34 @@ class CourseListTile extends StatelessWidget {
             AsyncTeacherChip(teacherId: courseData.data['manager']),
         ],
       ),
-      subtitle:
-          sportsList == null
-              ? Row(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+      subtitle: sportsList == null
+          ? Row(
+              children: [
+                Container(
+                  width: 100,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                ],
-              )
-              : Text(
-                sportsList
-                    ?.firstWhere(
-                      (element) => element.id == courseData.data['sport'],
-                    )
-                    .data['name'],
-                style: const TextStyle(fontSize: 12),
-              ),
+                ),
+              ],
+            )
+          : Text(
+              sportsList
+                  ?.firstWhere(
+                    (element) => element.id == courseData.data['sport'],
+                  )
+                  .data['name'],
+              style: const TextStyle(fontSize: 12),
+            ),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder:
-                (context) => TeacherCourseDetailView(
-                  initCourseData: courseData,
-                  popAndRefresh: popAndRefresh,
-                ),
+            builder: (context) => TeacherCourseDetailView(
+              initCourseData: courseData,
+              popAndRefresh: popAndRefresh,
+            ),
           ),
         );
       },

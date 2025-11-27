@@ -52,8 +52,11 @@ class CourseBookHistoryListTile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 spacing: 2,
                 children: [
-                  Icon(Icons.people, size: 14,),
-                  Text(historyRecord.get('student_count').toString(), style: TextStyle(fontSize: 16),),
+                  Icon(Icons.people, size: 14),
+                  Text(
+                    historyRecord.get('student_count').toString(),
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
             ),

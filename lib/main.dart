@@ -12,14 +12,11 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder:
-          (context, state) => Scaffold(
-            body: StreamBuilder(
-              stream: pb.authStore.onChange,
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<AuthStoreEvent> snapshot,
-              ) {
+      builder: (context, state) => Scaffold(
+        body: StreamBuilder(
+          stream: pb.authStore.onChange,
+          builder:
+              (BuildContext context, AsyncSnapshot<AuthStoreEvent> snapshot) {
                 final accountType = pb.authStore.record?.collectionName;
                 if (accountType == 'teachers') {
                   return TeacherHomeView();
@@ -31,14 +28,13 @@ final router = GoRouter(
 
                 return LoginScreen();
               },
-            ),
-          ),
+        ),
+      ),
     ),
     GoRoute(
       path: ('/login'),
-      builder:
-          (context, state) =>
-              LoginRouteScreen(queryParams: state.uri.queryParameters),
+      builder: (context, state) =>
+          LoginRouteScreen(queryParams: state.uri.queryParameters),
     ),
   ],
 );

@@ -56,11 +56,10 @@ class _StudentListTileState extends State<StudentListTile> {
         onTap: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
-              builder:
-                  (context) => TeacherEditStudentDetailsView(
-                    courseData: widget.courseData,
-                    initStudentData: widget.initStudentData,
-                  ),
+              builder: (context) => TeacherEditStudentDetailsView(
+                courseData: widget.courseData,
+                initStudentData: widget.initStudentData,
+              ),
             ),
           );
           widget.refreshCallback();
@@ -108,11 +107,10 @@ class _StudentListTileState extends State<StudentListTile> {
     final DateTime twentyFourHoursAgo = DateTime.now().subtract(
       const Duration(hours: 24),
     );
-    final records24h =
-        records.where((record) {
-          final DateTime createdDate = DateTime.parse(record.data['created']);
-          return createdDate.isAfter(twentyFourHoursAgo);
-        }).toList();
+    final records24h = records.where((record) {
+      final DateTime createdDate = DateTime.parse(record.data['created']);
+      return createdDate.isAfter(twentyFourHoursAgo);
+    }).toList();
 
     List<Map> studentRecordsMap = studentRecords
         .map((e) => {...e.data['questionAnswer'], 'created': e.data['created']})
@@ -165,67 +163,60 @@ class _StudentListTileState extends State<StudentListTile> {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${hasKaderStatus ? widget.initStudentData.data['kaderStatus']+", ": ""}${widget.initStudentData.data['birthYear']})",
+        "${widget.initStudentData.data['firstName']} ${widget.initStudentData.data['secondName']} (${hasKaderStatus ? widget.initStudentData.data['kaderStatus'] + ", " : ""}${widget.initStudentData.data['birthYear']})",
       ),
-      subtitle:
-          loadingRecords
-              ? LinearProgressIndicator()
-              : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    spacing: 2,
-                    children: [
-                      Icon(Icons.history, size: 20),
-                      ...conditionColors.map(
-                        (conditionColor) => Container(
-                          padding: EdgeInsets.symmetric(horizontal: 2.0),
-                          margin: EdgeInsets.symmetric(vertical: 1.0),
-                          decoration: BoxDecoration(
-                            color: conditionColor.color,
-                            borderRadius: BorderRadius.circular(4.0),
-                            border: Border.all(color: Colors.grey, width: 1.0),
-                          ),
-                          child: Text(
-                            getConditionLabel(conditionColor.id),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12.0,
-                            ),
-                          ),
+      subtitle: loadingRecords
+          ? LinearProgressIndicator()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  spacing: 2,
+                  children: [
+                    Icon(Icons.history, size: 20),
+                    ...conditionColors.map(
+                      (conditionColor) => Container(
+                        padding: EdgeInsets.symmetric(horizontal: 2.0),
+                        margin: EdgeInsets.symmetric(vertical: 1.0),
+                        decoration: BoxDecoration(
+                          color: conditionColor.color,
+                          borderRadius: BorderRadius.circular(4.0),
+                          border: Border.all(color: Colors.grey, width: 1.0),
+                        ),
+                        child: Text(
+                          getConditionLabel(conditionColor.id),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 4),
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    spacing: 2,
-                    children: [
-                      Icon(Icons.fiber_new, size: 20),
-                      ...conditionColors24h.map(
-                        (conditionColor) => Container(
-                          padding: EdgeInsets.symmetric(horizontal: 2.0),
-                          margin: EdgeInsets.symmetric(vertical: 1.0),
-                          decoration: BoxDecoration(
-                            color: conditionColor.color,
-                            borderRadius: BorderRadius.circular(4.0),
-                            border: Border.all(color: Colors.grey, width: 1.0),
-                          ),
-                          child: Text(
-                            getConditionLabel(conditionColor.id),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12.0,
-                            ),
-                          ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  spacing: 2,
+                  children: [
+                    Icon(Icons.fiber_new, size: 20),
+                    ...conditionColors24h.map(
+                      (conditionColor) => Container(
+                        padding: EdgeInsets.symmetric(horizontal: 2.0),
+                        margin: EdgeInsets.symmetric(vertical: 1.0),
+                        decoration: BoxDecoration(
+                          color: conditionColor.color,
+                          borderRadius: BorderRadius.circular(4.0),
+                          border: Border.all(color: Colors.grey, width: 1.0),
+                        ),
+                        child: Text(
+                          getConditionLabel(conditionColor.id),
+                          style: TextStyle(color: Colors.black, fontSize: 12.0),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
       leading: Icon(
         Icons.school,
         color: colorBySex(widget.initStudentData.data['sex']),
@@ -249,12 +240,11 @@ class _StudentListTileState extends State<StudentListTile> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder:
-                (context) => TeacherStudentDetailView(
-                  initStudentData: widget.initStudentData,
-                  questionsDefinition: widget.form,
-                  evalFields: widget.evalFields,
-                ),
+            builder: (context) => TeacherStudentDetailView(
+              initStudentData: widget.initStudentData,
+              questionsDefinition: widget.form,
+              evalFields: widget.evalFields,
+            ),
           ),
         );
       },

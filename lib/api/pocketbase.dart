@@ -8,9 +8,8 @@ late final PocketBase pb;
 Future<void> initPocketbase() async {
   secureStorage = const FlutterSecureStorage();
   final store = AsyncAuthStore(
-    save:
-        (String data) async =>
-            await secureStorage.write(key: 'pb_auth', value: data),
+    save: (String data) async =>
+        await secureStorage.write(key: 'pb_auth', value: data),
     initial: await secureStorage.read(key: 'pb_auth'),
   );
   pb = PocketBase(

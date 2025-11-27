@@ -6,11 +6,11 @@ description: "Zeyn allows you to track the activity of your students."
 
 publish_to: 'none'
 
-version: 1.3.2+7
+version: 1.3.3+8
 
 environment:
-  sdk: ^3.9.0
-  flutter: ^3.35.0
+  sdk: ^3.10.0
+  flutter: ^3.38.0
 
 dependencies:
   flutter:
@@ -29,7 +29,7 @@ dependencies:
   printing: ^5.14.2
   fl_chart: ^1.0.0
   flutter_secure_storage: ^9.2.4
-  go_router: ^16.0.0
+  go_router: ^17.0.0
 
 dev_dependencies:
   flutter_test:

@@ -135,10 +135,9 @@ class _AdminAddTeacherViewState extends State<AdminAddTeacherView> {
                   labelText: 'Passwort',
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    onPressed:
-                        () => setState(() {
-                          showPassword = !showPassword;
-                        }),
+                    onPressed: () => setState(() {
+                      showPassword = !showPassword;
+                    }),
                     icon: Icon(
                       !showPassword ? Icons.visibility : Icons.visibility_off,
                     ),
@@ -170,10 +169,9 @@ class _AdminAddTeacherViewState extends State<AdminAddTeacherView> {
                   labelText: 'Passwort wiederholen',
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    onPressed:
-                        () => setState(() {
-                          showPassword2 = !showPassword2;
-                        }),
+                    onPressed: () => setState(() {
+                      showPassword2 = !showPassword2;
+                    }),
                     icon: Icon(
                       !showPassword2 ? Icons.visibility : Icons.visibility_off,
                     ),

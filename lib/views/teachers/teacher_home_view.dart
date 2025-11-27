@@ -76,7 +76,10 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
         title: Text('Zeyn'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        actions: [FeedbackButton(urlSubPath: 'teacher'), LogoutIconButton()],
+        actions: [
+          FeedbackButton(urlSubPath: 'teacher'),
+          LogoutIconButton(),
+        ],
       ),
       body: Column(
         children: [
@@ -126,50 +129,48 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
             child: RefreshIndicator(
               key: _refreshKey,
               onRefresh: loadCourses,
-              child:
-                  courses.isNotEmpty
-                      ? ListView.builder(
-                        itemCount: courses.length,
-                        itemBuilder: (BuildContext context, int i) {
-                          final course = courses[i];
-                          return CourseListTile(
-                            courseData: course,
-                            sportsList: sports,
-                            popAndRefresh: () async {
-                              Navigator.of(context).pop();
-                              _refreshKey.currentState?.show();
-                            },
-                          );
-                        },
-                      )
-                      : CustomScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        slivers: [
-                          SliverFillRemaining(
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.search_off,
-                                    size: 60,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+              child: courses.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: courses.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        final course = courses[i];
+                        return CourseListTile(
+                          courseData: course,
+                          sportsList: sports,
+                          popAndRefresh: () async {
+                            Navigator.of(context).pop();
+                            _refreshKey.currentState?.show();
+                          },
+                        );
+                      },
+                    )
+                  : CustomScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        SliverFillRemaining(
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.search_off,
+                                  size: 60,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                Text(
+                                  'Keine Kurse gefunden',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    'Keine Kurse gefunden',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 40),
-                                ],
-                              ),
+                                ),
+                                SizedBox(height: 40),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
             ),
           ),
         ],

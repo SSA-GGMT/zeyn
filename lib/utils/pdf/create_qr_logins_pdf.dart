@@ -23,54 +23,49 @@ Future<Uint8List> createPDF(
   pdf.addPage(
     pw.MultiPage(
       pageFormat: PdfPageFormat.a4,
-      header:
-          (context) => pw.Text(
-            title,
-            style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
-          ),
-      footer:
-          (context) => pw.SizedBox(
-            width: 600,
-            child: pw.Row(
+      header: (context) => pw.Text(
+        title,
+        style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+      ),
+      footer: (context) => pw.SizedBox(
+        width: 600,
+        child: pw.Row(
+          children: [
+            pw.Column(
               children: [
-                pw.Column(
-                  children: [
-                    pw.Text(
-                      'Nur für den internen gebrauch'.toUpperCase(),
-                      style: pw.TextStyle(
-                        fontSize: 8.0,
-                        fontWeight: pw.FontWeight.bold,
-                      ),
-                    ),
-                    pw.Text(
-                      'Generiert von ${pb.authStore.record?.data['krz']} ${pb.authStore.record?.data['email']}',
-                      style: pw.TextStyle(fontSize: 8),
-                    ),
-                    pw.Text(
-                      '${pb.authStore.record?.data['school']}:${pb.authStore.record?.id}:$courseID',
-                      style: pw.TextStyle(
-                        fontSize: 6.0,
-                        font: pw.Font.courier(),
-                      ),
-                    ),
-                  ],
+                pw.Text(
+                  'Nur für den internen gebrauch'.toUpperCase(),
+                  style: pw.TextStyle(
+                    fontSize: 8.0,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
                 ),
-                pw.Spacer(),
-                pw.Column(
-                  children: [
-                    pw.Text(
-                      'Seite ${context.pageNumber} von ${context.pagesCount}',
-                      style: pw.TextStyle(fontSize: 8),
-                    ),
-                    pw.Text(
-                      DateTime.now().toLocal().toString(),
-                      style: pw.TextStyle(fontSize: 8),
-                    ),
-                  ],
+                pw.Text(
+                  'Generiert von ${pb.authStore.record?.data['krz']} ${pb.authStore.record?.data['email']}',
+                  style: pw.TextStyle(fontSize: 8),
+                ),
+                pw.Text(
+                  '${pb.authStore.record?.data['school']}:${pb.authStore.record?.id}:$courseID',
+                  style: pw.TextStyle(fontSize: 6.0, font: pw.Font.courier()),
                 ),
               ],
             ),
-          ),
+            pw.Spacer(),
+            pw.Column(
+              children: [
+                pw.Text(
+                  'Seite ${context.pageNumber} von ${context.pagesCount}',
+                  style: pw.TextStyle(fontSize: 8),
+                ),
+                pw.Text(
+                  DateTime.now().toLocal().toString(),
+                  style: pw.TextStyle(fontSize: 8),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
       build: (context) {
         final chunks = splitIntoChunks(accounts, 3);
         return chunks
@@ -80,49 +75,48 @@ Future<Uint8List> createPDF(
                 child: pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children:
-                      chunk
-                          .map(
-                            (e) => pw.Container(
-                              padding: pw.EdgeInsets.all(2.0),
-                              decoration: pw.BoxDecoration(
-                                border: pw.Border.all(
-                                  color: PdfColors.black,
-                                  width: 1.0,
-                                ),
+                  children: chunk
+                      .map(
+                        (e) => pw.Container(
+                          padding: pw.EdgeInsets.all(2.0),
+                          decoration: pw.BoxDecoration(
+                            border: pw.Border.all(
+                              color: PdfColors.black,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: pw.Column(
+                            mainAxisSize: pw.MainAxisSize.min,
+                            children: [
+                              pw.BarcodeWidget(
+                                data: e.createLoginToken(),
+                                barcode: pw.Barcode.qrCode(),
+                                width: 150,
+                                height: 150,
+                                padding: pw.EdgeInsets.all(4.0),
                               ),
-                              child: pw.Column(
+                              pw.Column(
                                 mainAxisSize: pw.MainAxisSize.min,
                                 children: [
-                                  pw.BarcodeWidget(
-                                    data: e.createLoginToken(),
-                                    barcode: pw.Barcode.qrCode(),
+                                  pw.SizedBox(
                                     width: 150,
-                                    height: 150,
-                                    padding: pw.EdgeInsets.all(4.0),
+                                    child: pw.Text(
+                                      '${e.firstName} ${e.secondName}',
+                                      softWrap: true,
+                                      style: pw.TextStyle(fontSize: 12),
+                                    ),
                                   ),
-                                  pw.Column(
-                                    mainAxisSize: pw.MainAxisSize.min,
-                                    children: [
-                                      pw.SizedBox(
-                                        width: 150,
-                                        child: pw.Text(
-                                          '${e.firstName} ${e.secondName}',
-                                          softWrap: true,
-                                          style: pw.TextStyle(fontSize: 12),
-                                        ),
-                                      ),
-                                      pw.Text(
-                                        e.id,
-                                        style: pw.TextStyle(fontSize: 8),
-                                      ),
-                                    ],
+                                  pw.Text(
+                                    e.id,
+                                    style: pw.TextStyle(fontSize: 8),
                                   ),
                                 ],
                               ),
-                            ),
-                          )
-                          .toList(),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             )

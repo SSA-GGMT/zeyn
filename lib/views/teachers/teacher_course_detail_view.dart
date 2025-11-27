@@ -79,8 +79,8 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
           .update(
             courseData.id,
             body: {
-              'guestManagers':
-                  courseData.data['guestManagers']..remove(teacherId),
+              'guestManagers': courseData.data['guestManagers']
+                ..remove(teacherId),
             },
           );
       await refreshCourseData();
@@ -150,8 +150,8 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder:
-                      (context) => CourseBookHistoryView(course: courseData),
+                  builder: (context) =>
+                      CourseBookHistoryView(course: courseData),
                 ),
               );
             },
@@ -167,66 +167,64 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
               icon: Icon(Icons.admin_panel_settings),
             ),
           PopupMenuButton(
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem(
-                    onTap: () async {
-                      final data = await getPdfData();
-                      Printing.layoutPdf(onLayout: (format) => data);
-                    },
-                    child: Row(
-                      spacing: 4.0,
-                      children: [Icon(Icons.print), Text('Logins Drucken')],
-                    ),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                onTap: () async {
+                  final data = await getPdfData();
+                  Printing.layoutPdf(onLayout: (format) => data);
+                },
+                child: Row(
+                  spacing: 4.0,
+                  children: [Icon(Icons.print), Text('Logins Drucken')],
+                ),
+              ),
+              PopupMenuItem(
+                onTap: () async {
+                  final data = await getPdfData();
+                  await Printing.sharePdf(
+                    bytes: data,
+                    filename: 'Logins_${courseData.data['courseTitle']}.pdf',
+                  );
+                },
+                child: Row(
+                  spacing: 4.0,
+                  children: [
+                    Icon(Icons.picture_as_pdf),
+                    Text('Logins Druck teilen'),
+                  ],
+                ),
+              ),
+              if (isOwnCourse)
+                PopupMenuItem(
+                  onTap: () async {
+                    final shouldDelete = await showConfirmDialog(
+                      context,
+                      message:
+                          "Sind Sie sicher, dass Sie diesen Kurs löschen möchten? Alle Schüler und deren Einträge werden gelöscht.",
+                    );
+                    if (!shouldDelete && !context.mounted) return;
+                    showLoadingDialog(context);
+                    try {
+                      await pb.collection('courses').delete(courseData.id);
+                      if (context.mounted) {
+                        Navigator.of(context).pop(); // loading modal
+                        widget.popAndRefresh();
+                      }
+                    } catch (e, s) {
+                      logger.e(e, stackTrace: s);
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                        showErrorDialog(context);
+                      }
+                      return;
+                    }
+                  },
+                  child: Row(
+                    spacing: 4.0,
+                    children: [Icon(Icons.delete), Text('Kurs löschen')],
                   ),
-                  PopupMenuItem(
-                    onTap: () async {
-                      final data = await getPdfData();
-                      await Printing.sharePdf(
-                        bytes: data,
-                        filename:
-                            'Logins_${courseData.data['courseTitle']}.pdf',
-                      );
-                    },
-                    child: Row(
-                      spacing: 4.0,
-                      children: [
-                        Icon(Icons.picture_as_pdf),
-                        Text('Logins Druck teilen'),
-                      ],
-                    ),
-                  ),
-                  if (isOwnCourse)
-                    PopupMenuItem(
-                      onTap: () async {
-                        final shouldDelete = await showConfirmDialog(
-                          context,
-                          message:
-                              "Sind Sie sicher, dass Sie diesen Kurs löschen möchten? Alle Schüler und deren Einträge werden gelöscht.",
-                        );
-                        if (!shouldDelete && !context.mounted) return;
-                        showLoadingDialog(context);
-                        try {
-                          await pb.collection('courses').delete(courseData.id);
-                          if (context.mounted) {
-                            Navigator.of(context).pop(); // loading modal
-                            widget.popAndRefresh();
-                          }
-                        } catch (e, s) {
-                          logger.e(e, stackTrace: s);
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                            showErrorDialog(context);
-                          }
-                          return;
-                        }
-                      },
-                      child: Row(
-                        spacing: 4.0,
-                        children: [Icon(Icons.delete), Text('Kurs löschen')],
-                      ),
-                    ),
-                ],
+                ),
+            ],
           ),
         ],
       ),
@@ -289,31 +287,28 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                           ...courseData.data['guestManagers'].map(
                             (teacherId) => AsyncTeacherChip(
                               teacherId: teacherId,
-                              actions:
-                                  isOwnCourse
-                                      ? [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed:
-                                                () => removeGuestManager(
-                                                  teacherId,
-                                                ),
-                                            child: Row(
-                                              spacing: 4.0,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.person_remove),
-                                                Text('Zugang entziehen'),
-                                              ],
-                                            ),
+                              actions: isOwnCourse
+                                  ? [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                        ),
+                                        child: ElevatedButton(
+                                          onPressed: () =>
+                                              removeGuestManager(teacherId),
+                                          child: Row(
+                                            spacing: 4.0,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.person_remove),
+                                              Text('Zugang entziehen'),
+                                            ],
                                           ),
                                         ),
-                                      ]
-                                      : null,
+                                      ),
+                                    ]
+                                  : null,
                             ),
                           ),
                           if (isOwnCourse)
@@ -362,23 +357,21 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
             else
               SliverToBoxAdapter(
                 child: Column(
-                  children:
-                      students!
-                          .map(
-                            (e) => StudentListTile(
-                              key: Key(e.id),
-                              initStudentData: e,
-                              courseData: courseData,
-                              form:
-                                  courseData.data['questions'] as List<dynamic>,
-                              evalFields: List<String>.from(
-                                courseData.data['evalFunction'] as List,
-                              ),
-                              refreshCallback:
-                                  () => refreshCourseData(showLoading: true),
-                            ),
-                          )
-                          .toList(),
+                  children: students!
+                      .map(
+                        (e) => StudentListTile(
+                          key: Key(e.id),
+                          initStudentData: e,
+                          courseData: courseData,
+                          form: courseData.data['questions'] as List<dynamic>,
+                          evalFields: List<String>.from(
+                            courseData.data['evalFunction'] as List,
+                          ),
+                          refreshCallback: () =>
+                              refreshCourseData(showLoading: true),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
           ],

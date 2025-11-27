@@ -85,10 +85,9 @@ class _TeacherSelectorViewState extends State<TeacherSelectorView> {
       final results = await getTeacherSearchResults(query);
       if (mounted) {
         setState(() {
-          _searchResults =
-              results
-                  .where((teacher) => !widget.excludeIds.contains(teacher.id))
-                  .toList();
+          _searchResults = results
+              .where((teacher) => !widget.excludeIds.contains(teacher.id))
+              .toList();
           _isLoading = false;
         });
       }
@@ -129,16 +128,15 @@ class _TeacherSelectorViewState extends State<TeacherSelectorView> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              suffixIcon:
-                  _searchQuery.isNotEmpty
-                      ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          _performSearch('');
-                        },
-                      )
-                      : null,
+              suffixIcon: _searchQuery.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _searchController.clear();
+                        _performSearch('');
+                      },
+                    )
+                  : null,
             ),
             onChanged: (value) {
               _performSearch(value);
@@ -146,27 +144,26 @@ class _TeacherSelectorViewState extends State<TeacherSelectorView> {
           ),
         ),
         Expanded(
-          child:
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : (_searchResults == null || _searchResults!.isEmpty)
-                  ? const Center(child: Text('Keine Ergebnisse'))
-                  : ListView.builder(
-                    itemCount: _searchResults!.length,
-                    itemBuilder: (context, index) {
-                      final teacher = _searchResults![index];
-                      return ListTile(
-                        leading: const Icon(Icons.person),
-                        title: Text(
-                          '${teacher.data['firstName']} ${teacher.data['secondName']}',
-                        ),
-                        subtitle: Text(
-                          '${teacher.data['krz']} - ${teacher.data['email'] ?? 'Keine E-Mail'}',
-                        ),
-                        onTap: () => widget.onTeacherSelected(teacher),
-                      );
-                    },
-                  ),
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : (_searchResults == null || _searchResults!.isEmpty)
+              ? const Center(child: Text('Keine Ergebnisse'))
+              : ListView.builder(
+                  itemCount: _searchResults!.length,
+                  itemBuilder: (context, index) {
+                    final teacher = _searchResults![index];
+                    return ListTile(
+                      leading: const Icon(Icons.person),
+                      title: Text(
+                        '${teacher.data['firstName']} ${teacher.data['secondName']}',
+                      ),
+                      subtitle: Text(
+                        '${teacher.data['krz']} - ${teacher.data['email'] ?? 'Keine E-Mail'}',
+                      ),
+                      onTap: () => widget.onTeacherSelected(teacher),
+                    );
+                  },
+                ),
         ),
       ],
     );
