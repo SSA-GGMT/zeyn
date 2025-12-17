@@ -11,6 +11,7 @@ import 'package:zeyn/utils/dialogs/show_loading_dialog.dart';
 import 'package:zeyn/views/shared/course_book_history_view.dart';
 import 'package:zeyn/views/teachers/teacher_add_student_to_course_view.dart';
 import 'package:printing/printing.dart';
+import 'package:zeyn/views/teachers/teacher_course_statistics_view.dart';
 
 import '../../api/pocketbase.dart';
 import '../../components/teacher/teacher_chip.dart';
@@ -50,7 +51,7 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
     try {
       final updatedCourseData = await pb
           .collection('courses')
-          .getOne(courseData.id);
+          .getOne(courseData.id, expand: 'sport,school');
       final studentsData = await pb
           .collection('students')
           .getList(filter: 'course = "${updatedCourseData.id}"');
@@ -222,6 +223,18 @@ class _TeacherCourseDetailViewState extends State<TeacherCourseDetailView> {
                   child: Row(
                     spacing: 4.0,
                     children: [Icon(Icons.delete), Text('Kurs löschen')],
+                  ),
+                ),
+                PopupMenuItem(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => TeacherCourseStatisticsView(students: students!, course: courseData))
+                    );
+                  },
+                  enabled: students != null && students!.isNotEmpty,
+                  child: Row(
+                    spacing: 4.0,
+                    children: [Icon(Icons.bar_chart), Text('Kursstatistiken')],
                   ),
                 ),
             ],
